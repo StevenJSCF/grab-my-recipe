@@ -13,6 +13,7 @@ import {
   Zap,
   Heart,
 } from "lucide-react";
+import SignInButton from "./SignInButton";
 
 export default function LandingPage() {
   return (
@@ -32,13 +33,7 @@ export default function LandingPage() {
             <Button size="sm" variant="outline">
               Create Free Account
             </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              className="border-gray-300 dark:border-gray-700"
-            >
-              Sign In
-            </Button>
+            <SignInButton />
           </div>
           <ThemeToggle />
         </div>
