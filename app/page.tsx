@@ -9,7 +9,5 @@ export default function Home() {
     </div>
   );
 }
-function auth() {
-  throw new Error("Function not implemented.");
-}
+
 

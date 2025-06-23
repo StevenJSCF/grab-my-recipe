@@ -1,8 +1,9 @@
 "use client";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import SignInModal from "@/components/SignInModal";
+import Image from "next/image";
 
 export default function AuthButton() {
   // Check if the user is logged in or not
@@ -25,7 +26,7 @@ export default function AuthButton() {
   return (
     <div className="flex items-center gap-2">
       {session.user?.image && (
-        <img
+        <Image
           src={session.user.image}
           alt="?"
           className="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700"
