@@ -13,7 +13,7 @@ import {
   Zap,
   Heart,
 } from "lucide-react";
-import SignInButton from "./SignInButton";
+import AuthButton from "./AuthButton";
 
 export default function LandingPage() {
   return (
@@ -29,12 +29,7 @@ export default function LandingPage() {
           </span>
         </div>
         <div className="flex items-center space-x-4">
-          <div className="flex flex-row gap-2">
-            <Button size="sm" variant="outline">
-              Create Free Account
-            </Button>
-            <SignInButton />
-          </div>
+          <AuthButton />
           <ThemeToggle />
         </div>
       </header>

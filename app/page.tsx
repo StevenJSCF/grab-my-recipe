@@ -1,9 +1,8 @@
 import LandingPage from "@/components/LandingPage";
-import { auth } from "@/auth";
 
 export default function Home() {
 
-  const session = await auth();
+  
   return (
     <div>
       <LandingPage />
