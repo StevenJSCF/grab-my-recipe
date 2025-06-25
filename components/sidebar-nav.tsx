@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Home, Upload, BookOpen, Heart, Settings, Menu } from "lucide-react"
@@ -8,9 +9,9 @@ import { cn } from "@/lib/utils"
 import { useMobile } from "@/hooks/use-mobile"
 
 const navigationItems = [
-  { icon: Home, label: "Home", href: "#home" },
-  { icon: Upload, label: "Upload Recipe", href: "#upload" },
-  { icon: BookOpen, label: "My Recipes", href: "#recipes" },
+  { icon: Home, label: "Home", href: "/Recipes" },
+  { icon: Upload, label: "Upload Recipe", href: "/UploadRecipe"},
+  { icon: BookOpen, label: "My Recipes", href: "/Recipes"},
   { icon: Heart, label: "Favorites", href: "#favorites" },
   { icon: Settings, label: "Settings", href: "#settings" },
 ]
@@ -93,7 +94,7 @@ export function SidebarNav({ isExpanded, onToggle }: SidebarNavProps) {
 
       <nav className="flex-1 p-2 overflow-y-auto">
         {navigationItems.map((item) => (
-          <a
+          <Link
             key={item.label}
             href={item.href}
             onClick={() => setActiveItem(item.label)}
@@ -107,7 +108,7 @@ export function SidebarNav({ isExpanded, onToggle }: SidebarNavProps) {
           >
             <item.icon className="h-5 w-5 flex-shrink-0" />
             {isExpanded && <span>{item.label}</span>}
-          </a>
+          </Link>
         ))}
       </nav>
     </div>
