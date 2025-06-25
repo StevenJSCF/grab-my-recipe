@@ -27,6 +27,8 @@ export default function AuthButton() {
     <div className="flex items-center gap-2">
       {session.user?.image && (
         <Image
+          width={32}
+          height={32}
           src={session.user.image}
           alt="?"
           className="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700"
