@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+model User {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId //Mongo default id is _id
+  email     String   @unique
+  name      String
+  recipes   Recipes[] // One-to-many relation with Recipes, this does not create a foreign key in MongoDB (Prisma way to handle relations)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Recipes {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId //Mongo default id is _id
+  title     String
+  ingredients String[] 
+  description String?
+  favorite  Boolean @default(false)
+  user      User?    @relation(fields: [userId], references: [id]) //virtial prisma relation
+  userId    String @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

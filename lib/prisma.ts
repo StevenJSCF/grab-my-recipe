@@ -1,0 +1,11 @@
+import {PrismaClient} from '@prisma/client';
+
+// Create a new Prisma Client instance
+const prisma = new PrismaClient();
+
+const globalForPrisma = globalThis as unknown as { prisma: typeof prisma };
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma 
+
+export default prisma;
+
