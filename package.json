@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:push": "dotenv -e .env.local -- npx prisma db push"
+    "dev_test": "npx prisma generate && next dev --turbopack",
+    "db:push": "dotenv -e .env.local -- npx prisma db push",
+    "db:generate": "dotenv -e .env.local -- npx prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
