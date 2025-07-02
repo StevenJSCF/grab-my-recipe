@@ -1,12 +1,17 @@
 # app.py
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # Import CORS for handling cross-origin requests
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, VideoUnavailable
 
 app = Flask(__name__)  # Creates the Flask server
-
+CORS(app)  # Enable CORS for all routes Cross Origin Resource Sharing
 # Define a route at /transcript
+# The API is running locally, havent host the API
+# http://127.0.0.1:5000/transcript?videoId=4nAfxzE02Gw
+# first run this locally "python3 app.py" to test the api
+
 @app.route("/transcript", methods=["GET"])
 def get_transcript():
 

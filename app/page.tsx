@@ -5,6 +5,7 @@ import { SidebarNav } from "@/components/sidebar-nav"
 import { cn } from "@/lib/utils"
 import { RecipesPage } from "@/app/(authenticated)/Recipes/page"
 import LandingPage from "@/components/LandingPage"
+import UploadRecipePage from "./(authenticated)/UploadRecipe/page"
 
 export default function Page() {
   const [sidebarExpanded, setSidebarExpanded] = useState(true)
@@ -15,7 +16,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen">
-      <LandingPage/>
+      <UploadRecipePage/>
 
       {/* Desktop Sidebar */}
       {/* <SidebarNav isExpanded={sidebarExpanded} onToggle={toggleSidebar} /> */}
