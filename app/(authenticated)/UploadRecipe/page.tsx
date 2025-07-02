@@ -4,12 +4,17 @@ import { Button } from "@/components/ui/button";
 
 export default function UploadRecipePage() {
   const [url, setUrl] = useState("");
+  const [recipeData, setRecipeData] = useState<any>(null);
 
-  const getVideoId = (url: string) => {
+const getVideoId = (url: string) => {
+  if (!url) return null;
+  try {
     const parseUrl = new URL(url);
-
     return parseUrl.searchParams.get("v");
-  };
+  } catch {
+    return null;
+  }
+};
 
   const handleButtonClick = () => {
     const videoId = getVideoId(url);
@@ -20,9 +25,17 @@ export default function UploadRecipePage() {
       fetch(`http://127.0.0.1:5000/transcript?videoId=${videoId}`)
         .then((response) => response.json())
         .then((data) => {
-            
-          console.log("API response:", data);
-          console.log("Transcript:", data.transcript);
+          const transcript = data.transcript;
+          if (!transcript) {
+            throw new Error("Transcript not found in the response");
+          }
+          return fetch(`/api/recipe/parse-recipe?transcript=${encodeURIComponent(transcript)}`);
+        })
+        .then((response) => response.json())
+        .then((data) => {
+           const parsedRecipe = JSON.parse(data.output_text); 
+           setRecipeData(parsedRecipe)
+           console.log("Recipe Data " + recipeData)
         })
         .catch((error) => {
           console.error("Error fetching transcript:", error);
@@ -48,6 +61,39 @@ export default function UploadRecipePage() {
           <Button onClick={handleButtonClick}>Submit</Button>
         </div>
       </div>
+        
+        {/*Displaying Recipe*/}
+        {recipeData && (
+            <form>
+                {/*Tittle*/}
+                <div>
+                    <label>Title</label>
+                    <Input 
+                        value={recipeData.tittle}
+                        onChange={e => setRecipeData({ ...recipeData, tittle: e.target.value})}
+                    />
+                </div>
+                {/*Ingredients*/}
+                {/* <div>
+                    <label>Ingredients</label>
+                    {Array.isArray(recipeData.ingredients) && recipeData.ingredients.map((ingredient, idx) => 
+                        <div key={idx} className="flex gap-2">
+                            <Input
+                                value={ingredient.name}
+                                onChange={e => {
+                                    const newIngredients = [...recipeData.ingredients]
+                                    newIngredients[idx].name = e.target.value
+                                    setRecipeData({...recipeData, ingredients: newIngredients]})
+                                }}
+                            />
+                        </div>
+                    )}
+
+                </div> */}
+            </form>
+        )}
+
+
     </div>
   );
 }

@@ -20,7 +20,7 @@ model User {
   image     String?
   emailVerified DateTime? 
   name      String
-  recipes   Recipes[] // One-to-many relation with Recipes, this does not create a foreign key in MongoDB (Prisma way to handle relations)
+  recipes   Recipe[] // One-to-many relation with Recipes, this does not create a foreign key in MongoDB (Prisma way to handle relations)
   accounts       Account[]
   sessions       Session[]
 }
@@ -51,10 +51,18 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model Recipes {
+model Ingredient {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  quantity  String
+  recipe    Recipe? @relation(fields: [recipeId], references: [id])
+  recipeId  String?  @db.ObjectId
+}
+
+model Recipe {
   id        String      @id @default(auto()) @map("_id") @db.ObjectId //Mongo default id is _id
   title     String
-  ingredients String[] 
+  ingredients Ingredient[] 
   description String?
   favorite  Boolean @default(false)
   user      User?    @relation(fields: [userId], references: [id]) //virtial prisma relation
