@@ -11,7 +11,7 @@ export default function UploadRecipePage() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
 
   const mockRecipe = {
-    tittle: "Spaghetti Bolognese",
+    title: "Spaghetti Bolognese",
     ingredients: [
       { name: "Spaghetti", quantity: "200g" },
       { name: "Ground Beef", quantity: "300g" },
@@ -98,15 +98,32 @@ export default function UploadRecipePage() {
         {recipeData ? (
           <div>
             <div className="flex flex-col">
+              {/*Title*/}
+              <div className="mb-8">
+                <h1 className="font-bold text-5xl">{recipeData.title}</h1>
+                <p>Youtube Channel:</p>
+                <p>Link: ...</p>
+
+              </div>
+
+
               {/*Youtube Video Info*/}
               <div className="flex justify-center mb-6">
-                <Image
-                  src="https://i.ytimg.com/vi/4nAfxzE02Gw/default.jpg" //Youtube thumbnail can be get from the google api
-                  alt="Recipe image"
-                  width={400}
-                  height={300}
-                />
+                <div className="">
+                  <Image
+                    src="https://i.ytimg.com/vi/4nAfxzE02Gw/default.jpg" //Youtube thumbnail can be get from the google api
+                    alt="Recipe image"
+                    width={400}
+                    height={300}
+                  />
+                  <div className="flex mt-2">
+                    <span className="w-1/2">Ready In: </span>
+                    <span className="w-1/2">Serves: </span>
+                  </div>
+                  <p></p>
+                </div>
               </div>
+
               {/* Ingredients and Instructions */}
               <div className="flex flex-row gap-8">
                 {/* Ingredients */}
