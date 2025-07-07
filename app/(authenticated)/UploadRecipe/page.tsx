@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Ingredient, Instruction } from "@/lib/generated/prisma/client";
 import { SidebarNav } from "@/components/sidebar-nav";
 import Image from "next/image";
+import { UploadRecipeSkeleton } from "@/components/UploadRecipeSkeleton";
 
 export default function UploadRecipePage() {
   const [url, setUrl] = useState("");
   const [recipeData, setRecipeData] = useState<any>(null);
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const mockRecipe = {
     title: "Spaghetti Bolognese",
@@ -39,6 +41,7 @@ export default function UploadRecipePage() {
 
     console.log("Video ID:", videoId);
     if (videoId) {
+      setLoading(true);
       //127.0.0.1:5000/transcript?videoId=4nAfxzE02Gw
       fetch(`http://127.0.0.1:5000/transcript?videoId=${videoId}`)
         .then((response) => response.json())
@@ -57,11 +60,11 @@ export default function UploadRecipePage() {
         .then((data) => {
           const parsedRecipe = JSON.parse(data.output_text);
           setRecipeData(parsedRecipe);
-          console.log("Recipe Data " + recipeData);
         })
         .catch((error) => {
           console.error("Error fetching transcript:", error);
-        });
+        })
+        .finally(() => setLoading(false));
     } else {
       alert("Invalid YouTube URL");
     }
@@ -94,8 +97,9 @@ export default function UploadRecipePage() {
           Load Mock Recipe
         </Button>
         {/*Displaying Recipe*/}
-
-        {recipeData ? (
+        {loading ? (
+          <UploadRecipeSkeleton />
+        ) : recipeData ? (
           <div>
             <div className="flex flex-col">
               {/*Title*/}
@@ -103,9 +107,7 @@ export default function UploadRecipePage() {
                 <h1 className="font-bold text-5xl">{recipeData.title}</h1>
                 <p>Youtube Channel:</p>
                 <p>Link: ...</p>
-
               </div>
-
 
               {/*Youtube Video Info*/}
               <div className="flex justify-center mb-6">
