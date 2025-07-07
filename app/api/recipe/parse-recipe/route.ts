@@ -9,11 +9,10 @@ import OpenAI from "openai";
 //   const {searchParams} = new URL(request.url)
 // }
 
-export async function GET(request: NextRequest) {
-  // For now, just test the hardcoded input
-  const {searchParams} = new URL(request.url)
-  // example: http://localhost:3000/api/recipe/parse-recipe?transcript=your+instructions+here
-  const transcript = searchParams.get("transcript")
+// example: http://localhost:3000/api/recipe/parse-recipe?transcript=your+instructions+here
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+  const transcript = body.transcript
 
   if(!transcript){
     return NextResponse.json({error : "Missing transcript"})

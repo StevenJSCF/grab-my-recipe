@@ -59,10 +59,21 @@ model Ingredient {
   recipeId  String?  @db.ObjectId
 }
 
+model Instruction {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  step String
+  description String
+  recipe    Recipe? @relation(fields: [recipeId], references: [id])
+  recipeId  String?  @db.ObjectId
+}
+
+
+
 model Recipe {
   id        String      @id @default(auto()) @map("_id") @db.ObjectId //Mongo default id is _id
   title     String
-  ingredients Ingredient[] 
+  ingredient Ingredient[] 
+  instruction Instruction[]
   description String?
   favorite  Boolean @default(false)
   user      User?    @relation(fields: [userId], references: [id]) //virtial prisma relation
