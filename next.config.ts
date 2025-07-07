@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   images: {
     domains: [
       "lh3.googleusercontent.com",
+      "i.ytimg.com"
       // add other domains as needed
     ],
   },};

@@ -99,45 +99,22 @@ export default function UploadRecipePage() {
         {recipeData ? (
           <div>
             <div className="flex flex-col">
+              
               {/*Youtube Video Info*/}
-              {/* Image on top */}
               <div className="flex justify-center mb-6">
                 <Image
-                  src="/placeholder.png"
+                  src="https://i.ytimg.com/vi/4nAfxzE02Gw/default.jpg" //Youtube thumbnail can be get from the google api 
                   alt="Recipe image"
                   width={400}
                   height={300}
                 />
               </div>
-              {/* Ingredients and Instructions side by side */}
+              {/* Ingredients and Instructions */}
               <div className="flex flex-row gap-8">
                 {/* Ingredients */}
                 <div className="flex-1 border-2 border-black p-4">
                   <h2 className="font-bold mb-2">Ingredients</h2>
-                  {/* ...ingredients list here... */}
-                </div>
-                {/* Instructions */}
-                <div className="flex-1 border-2 border-black p-4">
-                  <h2 className="font-bold mb-2">Instructions</h2>
-                  {/* ...instructions list here... */}
-                </div>
-              </div>
-            </div>
-            <form>
-              {/*Tittle*/}
-              <div>
-                <label>Title</label>
-                <Input
-                  value={recipeData.tittle}
-                  onChange={(e) =>
-                    setRecipeData({ ...recipeData, tittle: e.target.value })
-                  }
-                />
-              </div>
-              {/*Ingredients*/}
-              <div>
-                <label>Ingredients</label>
-                {Array.isArray(recipeData.ingredients) &&
+                  {Array.isArray(recipeData.ingredients) &&
                   recipeData.ingredients.map(
                     (ingredient: Ingredient, idx: number) => (
                       <div key={idx}>
@@ -176,11 +153,11 @@ export default function UploadRecipePage() {
                       </div>
                     )
                   )}
-              </div>
-              {/*Steps*/}
-              <div>
-                <label>Instructions</label>
-                {Array.isArray(recipeData.instructions) &&
+                </div>
+                {/* Instructions */}
+                <div className="flex-1 border-2 border-black p-4">
+                  <h2 className="font-bold mb-2">Instructions</h2>
+                                  {Array.isArray(recipeData.instructions) &&
                   recipeData.instructions.map(
                     (instructions: Instruction, idx: number) => (
                       <div key={idx}>
@@ -219,8 +196,9 @@ export default function UploadRecipePage() {
                       </div>
                     )
                   )}
+                </div>
               </div>
-            </form>
+            </div>
           </div>
         ) : (
           <div className="text-gray-500 mt-8">
