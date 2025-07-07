@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Ingredient, Instruction } from "@/lib/generated/prisma/client";
 import { SidebarNav } from "@/components/sidebar-nav";
-import { defaultOverrides } from "next/dist/server/require-hook";
 import Image from "next/image";
 
 export default function UploadRecipePage() {
@@ -99,11 +98,10 @@ export default function UploadRecipePage() {
         {recipeData ? (
           <div>
             <div className="flex flex-col">
-              
               {/*Youtube Video Info*/}
               <div className="flex justify-center mb-6">
                 <Image
-                  src="https://i.ytimg.com/vi/4nAfxzE02Gw/default.jpg" //Youtube thumbnail can be get from the google api 
+                  src="https://i.ytimg.com/vi/4nAfxzE02Gw/default.jpg" //Youtube thumbnail can be get from the google api
                   alt="Recipe image"
                   width={400}
                   height={300}
@@ -113,89 +111,41 @@ export default function UploadRecipePage() {
               <div className="flex flex-row gap-8">
                 {/* Ingredients */}
                 <div className="flex-1 border-2 border-black p-4">
-                  <h2 className="font-bold mb-2">Ingredients</h2>
+                  <h2 className="font-bold mb-2 text-2xl">Ingredients</h2>
                   {Array.isArray(recipeData.ingredients) &&
-                  recipeData.ingredients.map(
-                    (ingredient: Ingredient, idx: number) => (
-                      <div key={idx}>
-                        <div className="flex gap-2">
+                    recipeData.ingredients.map(
+                      (ingredient: Ingredient, idx: number) => (
+                        <div key={idx} className="flex gap-2 mb-2 items-center">
                           {/* Name */}
-                          <Input
-                            value={ingredient.name}
-                            onChange={(e) => {
-                              const newIngredients = [
-                                ...recipeData.ingredients,
-                              ];
-                              newIngredients[idx].name = e.target.value;
-                              setRecipeData({
-                                ...recipeData,
-                                ingredients: newIngredients,
-                              });
-                            }}
-                          />
+                          <span className="font-medium w-1/2">
+                            {ingredient.name}
+                          </span>
+                          {/* Quantity */}
+                          <span className="text-gray-700 w-1/2">
+                            {ingredient.quantity}
+                          </span>
                         </div>
-                        {/* Quantity */}
-                        <div className="flex gap-2">
-                          <Input
-                            value={ingredient.quantity}
-                            onChange={(e) => {
-                              const newIngredients = [
-                                ...recipeData.ingredients,
-                              ];
-                              newIngredients[idx].quantity = e.target.value;
-                              setRecipeData({
-                                ...recipeData,
-                                ingredients: newIngredients,
-                              });
-                            }}
-                          />
-                        </div>
-                      </div>
-                    )
-                  )}
+                      )
+                    )}
                 </div>
                 {/* Instructions */}
                 <div className="flex-1 border-2 border-black p-4">
-                  <h2 className="font-bold mb-2">Instructions</h2>
-                                  {Array.isArray(recipeData.instructions) &&
-                  recipeData.instructions.map(
-                    (instructions: Instruction, idx: number) => (
-                      <div key={idx}>
-                        <div className="flex gap-2">
+                  <h2 className="font-bold mb-2 text-2xl">Instructions</h2>
+                  {Array.isArray(recipeData.instructions) &&
+                    recipeData.instructions.map(
+                      (instruction: Instruction, idx: number) => (
+                        <div key={idx} className="flex gap-2 mb-2 items-center">
                           {/* Name */}
-                          <Input
-                            value={instructions.step}
-                            onChange={(e) => {
-                              const newInstructions = [
-                                ...recipeData.instructions,
-                              ];
-                              newInstructions[idx].step = e.target.value;
-                              setRecipeData({
-                                ...recipeData,
-                                instructions: newInstructions,
-                              });
-                            }}
-                          />
+                          <span className="font-medium">
+                            {instruction.step}
+                          </span>
+                          {/* Quantity */}
+                          <span className="text-gray-700 ">
+                            {instruction.description}
+                          </span>
                         </div>
-                        {/* Quantity */}
-                        <div className="flex gap-2">
-                          <Input
-                            value={instructions.description}
-                            onChange={(e) => {
-                              const newInstructions = [
-                                ...recipeData.instructions,
-                              ];
-                              newInstructions[idx].description = e.target.value;
-                              setRecipeData({
-                                ...recipeData,
-                                instructions: newInstructions,
-                              });
-                            }}
-                          />
-                        </div>
-                      </div>
-                    )
-                  )}
+                      )
+                    )}
                 </div>
               </div>
             </div>
