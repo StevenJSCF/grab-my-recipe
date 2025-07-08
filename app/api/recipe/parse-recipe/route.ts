@@ -12,14 +12,16 @@ import OpenAI from "openai";
 // example: http://localhost:3000/api/recipe/parse-recipe?transcript=your+instructions+here
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const transcript = body.transcript
+  const { transcript, description } = body;
 
-  if(!transcript){
+  if(!transcript || !description){
     return NextResponse.json({error : "Missing transcript"})
   }
 
+  const combinedText = `Transcript:\n${transcript}\n\nDescription:\n${description}`;
+
   try {
-    const result = await parseTranscript(transcript);
+    const result = await parseTranscript(combinedText);
     return NextResponse.json(result);
   } catch (e) {
     return NextResponse.json(
@@ -40,7 +42,10 @@ export async function parseTranscript(transcript: string) {
       input: [
         {
           role: "system",
-          content: `You are a helpful assistant designed to scrapemthe given cooking youtube video and output a JSON with all the ingredients, their quantity, cooking instructions and the tittle. 
+          content: `You are a helpful assistant designed to scrape the given cooking youtube video and output a JSON as shown in the example.
+                    You will be given a transcript and the video description, In case you cannot find the required info inside the transcript search the description. 
+                    For ingredients that dont have an ammount use N/A this doesn't apply to the ingredients that don't have an exact ammount but you can say or what the video says for example: splash of milk or 2 drops of oil
+                    Can you also calculat ethe duration of the recipe, it only have to be an approx. Sane with the serving size   
           Please send the JSON in this format:
           {
             "title": "Pancakes",
@@ -53,7 +58,9 @@ export async function parseTranscript(transcript: string) {
                 { "step": 1, "description": "Mix flour and milk in a bowl." },
                 { "step": 2, "description": "Add egg and stir until smooth." },
                 { "step": 3, "description": "Pour batter onto a hot griddle and cook until golden." }
-              ]
+              ],
+              "duration": "30min"
+	            "serving": "4 people"
             }
           `,
         },

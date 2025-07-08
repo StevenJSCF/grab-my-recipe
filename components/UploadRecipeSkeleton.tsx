@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 export function UploadRecipeSkeleton() {
   return (
@@ -12,7 +12,7 @@ export function UploadRecipeSkeleton() {
         </div>
         {/* Youtube Video Info */}
         <div className="flex justify-center mb-6">
-          <div className="w-[400px] h-[300px] bg-gray-200 rounded" />
+          <div className="w-[400px] h-[300px] bg-gray-300 rounded" />
         </div>
         {/* Ingredients and Instructions */}
         <div className="flex flex-row gap-8">

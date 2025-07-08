@@ -36,35 +36,58 @@ export default function UploadRecipePage() {
     }
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     const videoId = getVideoId(url);
-
     console.log("Video ID:", videoId);
     if (videoId) {
       setLoading(true);
-      //127.0.0.1:5000/transcript?videoId=4nAfxzE02Gw
-      fetch(`http://127.0.0.1:5000/transcript?videoId=${videoId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          const transcript = data.transcript;
-          if (!transcript) {
-            throw new Error("Transcript not found in the response");
-          }
-          return fetch("api/recipe/parse-recipe", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ transcript }),
-          });
-        })
-        .then((response) => response.json())
-        .then((data) => {
-          const parsedRecipe = JSON.parse(data.output_text);
-          setRecipeData(parsedRecipe);
-        })
-        .catch((error) => {
-          console.error("Error fetching transcript:", error);
-        })
-        .finally(() => setLoading(false));
+      try {
+        // Fetch video transcript
+        const transcriptRes = await fetch(
+          `http://127.0.0.1:5000/transcript?videoId=${videoId}`
+        );
+        const transcriptData = await transcriptRes.json();
+        const transcript = transcriptData.transcript;
+        if (!transcript) {
+          throw new Error("Transcript not found in the response");
+        }
+        // Fetch YouTube metadata from your own API route (server-side)
+        const youtubeRes = await fetch("/api/youtube/google-ytv3", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ videoId }),
+        });
+        const youtubeData = await youtubeRes.json();
+        if (
+          !youtubeData ||
+          !youtubeData.items ||
+          youtubeData.items.length === 0
+        ) {
+          throw new Error("No video info found for this video ID.");
+        }
+        const videoInfo = youtubeData.items[0];
+        const channel = videoInfo.snippet.channelTitle;
+        const thumbnail = videoInfo.snippet.thumbnails.default.url;
+        const title = videoInfo.snippet.title;
+        const description = videoInfo.snippet.description;
+        // Combine transcript and video desc
+        const combined = { transcript, description };
+        // Send to backend
+        const response = await fetch("api/recipe/parse-recipe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(combined),
+        });
+        const data = await response.json();
+        console.log("Raw OpenAI/LLM response:", data); // <-- Add this line
+        const parsedRecipe = JSON.parse(data.output_text);
+        console.log("Parsed recipe object:", parsedRecipe); // <-- Add this line
+        setRecipeData(parsedRecipe);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
     } else {
       alert("Invalid YouTube URL");
     }
