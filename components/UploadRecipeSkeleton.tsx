@@ -5,7 +5,7 @@ export function UploadRecipeSkeleton() {
     <div className="animate-pulse">
       <div className="flex flex-col">
         {/* Title */}
-        <div className="mb-8">
+        <div className="mb-8 mt-8">
           <div className="h-12 w-2/3 bg-gray-300 rounded mb-2" />
           <div className="h-4 w-1/3 bg-gray-200 rounded mb-1" />
           <div className="h-4 w-1/4 bg-gray-200 rounded" />

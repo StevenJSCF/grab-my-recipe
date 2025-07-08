@@ -129,7 +129,7 @@ export default function UploadRecipePage() {
           <div>
             <div className="flex flex-col">
               {/*Title*/}
-              <div className="mb-8 mt-5">
+              <div className="mb-8 mt-8">
                 <h1 className="font-bold text-4xl">{recipeData.title}</h1>
                 <p className="font-bold text-xl">
                   Youtube Channel: {recipeData.channel}
