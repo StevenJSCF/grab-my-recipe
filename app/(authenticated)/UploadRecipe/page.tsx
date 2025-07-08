@@ -67,7 +67,7 @@ export default function UploadRecipePage() {
         }
         const videoInfo = youtubeData.items[0];
         const channel = videoInfo.snippet.channelTitle;
-        const thumbnail = videoInfo.snippet.thumbnails.default.url;
+        const thumbnail = videoInfo.snippet.thumbnails.maxres.url;
         const title = videoInfo.snippet.title;
         const description = videoInfo.snippet.description;
         // Combine transcript and video desc
@@ -79,10 +79,15 @@ export default function UploadRecipePage() {
           body: JSON.stringify(combined),
         });
         const data = await response.json();
-        console.log("Raw OpenAI/LLM response:", data); // <-- Add this line
         const parsedRecipe = JSON.parse(data.output_text);
-        console.log("Parsed recipe object:", parsedRecipe); // <-- Add this line
-        setRecipeData(parsedRecipe);
+        const fullRecipe = {
+          ...parsedRecipe,
+          channel,
+          thumbnail,
+          title, // This will overwrite parsedRecipe.title
+        };
+        setRecipeData(fullRecipe);
+        console.log("Set recipeData:", fullRecipe);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -104,10 +109,10 @@ export default function UploadRecipePage() {
           isSidebarExpanded ? "ml-64" : "ml-16"
         }`}
       >
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+        <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-8">
           Upload Recipe
         </h1>
-        <p>Please enter the cooking video url</p>
+        <p className="text-3xl font-bold">Please enter the cooking video url</p>
         <div className="flex gap-2 mt-2 w-full max-w-md">
           <Input
             value={url}
@@ -116,9 +121,7 @@ export default function UploadRecipePage() {
           />
           <Button onClick={handleButtonClick}>Submit</Button>
         </div>
-        <Button onClick={() => setRecipeData(mockRecipe)}>
-          Load Mock Recipe
-        </Button>
+
         {/*Displaying Recipe*/}
         {loading ? (
           <UploadRecipeSkeleton />
@@ -126,26 +129,33 @@ export default function UploadRecipePage() {
           <div>
             <div className="flex flex-col">
               {/*Title*/}
-              <div className="mb-8">
-                <h1 className="font-bold text-5xl">{recipeData.title}</h1>
-                <p>Youtube Channel:</p>
-                <p>Link: ...</p>
+              <div className="mb-8 mt-5">
+                <h1 className="font-bold text-4xl">{recipeData.title}</h1>
+                <p className="font-bold text-xl">
+                  Youtube Channel: {recipeData.channel}
+                </p>
+                <p className="font-bold text-xl">Video Link: {url}</p>
               </div>
 
               {/*Youtube Video Info*/}
               <div className="flex justify-center mb-6">
                 <div className="">
                   <Image
-                    src="https://i.ytimg.com/vi/4nAfxzE02Gw/default.jpg" //Youtube thumbnail can be get from the google api
+                    src={recipeData.thumbnail} //Youtube thumbnail can be get from the google api
                     alt="Recipe image"
                     width={400}
                     height={300}
                   />
                   <div className="flex mt-2">
-                    <span className="w-1/2">Ready In: </span>
-                    <span className="w-1/2">Serves: </span>
+                    <span className="w-1/2">
+                      <span className="font-bold">Ready In:</span>{" "}
+                      {recipeData.duration}
+                    </span>
+                    <span className="w-1/2">
+                      <span className="font-bold">Serves:</span>{" "}
+                      {recipeData.serving}
+                    </span>
                   </div>
-                  <p></p>
                 </div>
               </div>
 

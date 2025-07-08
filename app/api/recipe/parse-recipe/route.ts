@@ -59,8 +59,8 @@ export async function parseTranscript(transcript: string) {
                 { "step": 2, "description": "Add egg and stir until smooth." },
                 { "step": 3, "description": "Pour batter onto a hot griddle and cook until golden." }
               ],
-              "duration": "30min"
-	            "serving": "4 people"
+              "duration": "x min" (here just put x min or x hour dont add additional info keep it simple)
+	            "serving": "x people"
             }
           `,
         },
