@@ -5,26 +5,12 @@ import { Ingredient, Instruction } from "@/lib/generated/prisma/client";
 import { SidebarNav } from "@/components/sidebar-nav";
 import Image from "next/image";
 import { UploadRecipeSkeleton } from "@/components/UploadRecipeSkeleton";
-
+import { toast } from "react-hot-toast";
 export default function UploadRecipePage() {
   const [url, setUrl] = useState("");
   const [recipeData, setRecipeData] = useState<any>(null);
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const mockRecipe = {
-    title: "Spaghetti Bolognese",
-    ingredients: [
-      { name: "Spaghetti", quantity: "200g" },
-      { name: "Ground Beef", quantity: "300g" },
-      // ...more ingredients
-    ],
-    instructions: [
-      { step: "1", description: "Bring a large pot of water to a boil." },
-      { step: "2", description: "Add spaghetti and cook until al dente." },
-      // ...more steps
-    ],
-  };
 
   const getVideoId = (url: string) => {
     if (!url) return null;
@@ -86,20 +72,33 @@ export default function UploadRecipePage() {
           thumbnail,
           title, // This will overwrite parsedRecipe.title
         };
-        setRecipeData(fullRecipe);
-        console.log("Set recipeData:", fullRecipe);
+
+        if (parsedRecipe.message === "not_a_cooking_video") {
+          toast.error(
+            "No recipe could be extracted."
+          );
+          console.log("This is not a cooking video");
+
+          setRecipeData(null);
+          return;
+        }
+        if (parsedRecipe.message === "cooking_video") {
+          toast.success("Recipe extracted successfully");
+          setRecipeData(fullRecipe);
+          console.log("Recipe Data " + recipeData);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     } else {
-      alert("Invalid YouTube URL");
+      toast.error("Please enter a valid YouTube video URL");
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-orange-50 to-red-50 dark:from-gray-900 dark:to-gray-800">
+    <div className="flex min-h-screen dark:from-gray-900 dark:to-gray-800">
       <SidebarNav
         isExpanded={isSidebarExpanded}
         onToggle={() => setIsSidebarExpanded((prev) => !prev)}
@@ -134,7 +133,6 @@ export default function UploadRecipePage() {
                 <p className="font-bold text-xl">
                   Youtube Channel: {recipeData.channel}
                 </p>
-                <p className="font-bold text-xl">Video Link: {url}</p>
               </div>
 
               {/*Youtube Video Info*/}
@@ -179,6 +177,10 @@ export default function UploadRecipePage() {
                         </div>
                       )
                     )}
+
+                    <p className="text-gray-500 mt-4 text-sm">
+                    Note: Ingredients without a specific quantity are marked as "N/A". 
+                    </p>
                 </div>
                 {/* Instructions */}
                 <div className="flex-1 border-2 border-black p-4">
@@ -203,9 +205,7 @@ export default function UploadRecipePage() {
             </div>
           </div>
         ) : (
-          <div className="text-gray-500 mt-8">
-            You first need to upload the recipe.
-          </div>
+          null
         )}
       </div>
     </div>

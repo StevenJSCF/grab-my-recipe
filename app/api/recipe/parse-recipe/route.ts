@@ -14,8 +14,8 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const { transcript, description } = body;
 
-  if(!transcript || !description){
-    return NextResponse.json({error : "Missing transcript"})
+  if (!transcript || !description) {
+    return NextResponse.json({ error: "Missing transcript" });
   }
 
   const combinedText = `Transcript:\n${transcript}\n\nDescription:\n${description}`;
@@ -61,6 +61,12 @@ export async function parseTranscript(transcript: string) {
               ],
               "duration": "x min" (here just put x min or x hour dont add additional info keep it simple)
 	            "serving": "x people"
+              "message": "cooking_video" (make sure you send this EXACT message dont chnage anything)
+            }
+
+            If the transcript given is not a cooking youtube video please send a JSON 
+            {
+              "message": "not_a_cooking_video" (make sure you send this EXACT message dont chnage anything)
             }
           `,
         },
@@ -68,6 +74,25 @@ export async function parseTranscript(transcript: string) {
       ],
       text: { format: { type: "json_object" } },
     });
+
+    console.log("this is the response status: " + response.status);
+
+    //HANDLING EDGE CASES
+    if (response.status === "completed") {
+      return response;
+    }
+
+    if (
+      response.status === "incomplete" &&
+      response.incomplete_details?.reason === "max_output_tokens"
+    ) {
+      return {
+        status: "error",
+        reason: "max_output_tokens",
+        message:
+          "The recipe is too long or the output was cut off. Please try with a shorter video or transcript.",
+      };
+    }
 
     return response;
 
