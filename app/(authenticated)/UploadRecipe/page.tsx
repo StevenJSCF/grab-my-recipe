@@ -74,9 +74,7 @@ export default function UploadRecipePage() {
         };
 
         if (parsedRecipe.message === "not_a_cooking_video") {
-          toast.error(
-            "No recipe could be extracted."
-          );
+          toast.error("No recipe could be extracted.");
           console.log("This is not a cooking video");
 
           setRecipeData(null);
@@ -98,116 +96,121 @@ export default function UploadRecipePage() {
   };
 
   return (
-    <div className="flex min-h-screen dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-orange-100 to-red-100 dark:from-gray-900 dark:to-gray-800 flex flex-col">
       <SidebarNav
         isExpanded={isSidebarExpanded}
         onToggle={() => setIsSidebarExpanded((prev) => !prev)}
       />
-      <div
-        className={`flex-1 px-4 py-8 transition-all duration-300 ${
-          isSidebarExpanded ? "ml-64" : "ml-16"
-        }`}
-      >
-        <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-8">
-          Upload Recipe
-        </h1>
-        <p className="text-3xl font-bold">Please enter the cooking video url</p>
-        <div className="flex gap-2 mt-2 w-full max-w-md">
-          <Input
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="Enter YouTube video URL"
-          />
-          <Button onClick={handleButtonClick}>Submit</Button>
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8">
+        <div className="w-full max-w-xl bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 mt-8">
+          <h1 className="text-4xl font-extrabold text-center text-orange-600 dark:text-orange-300 mb-4">
+            Grab My Recipe
+          </h1>
+          <p className="text-lg text-center text-gray-700 dark:text-gray-300 mb-6">
+            Paste a YouTube cooking video URL below to extract the recipe!
+          </p>
+          <div className="flex gap-2 mb-4">
+            <Input
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="Enter YouTube video URL"
+              className="flex-1 border-2 border-orange-300 focus:border-orange-500 rounded-lg px-3 py-2"
+            />
+            <Button
+              onClick={handleButtonClick}
+              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-lg"
+            >
+              Submit
+            </Button>
+          </div>
         </div>
 
-        {/*Displaying Recipe*/}
-        {loading ? (
-          <UploadRecipeSkeleton />
-        ) : recipeData ? (
-          <div>
-            <div className="flex flex-col">
-              {/*Title*/}
-              <div className="mb-8 mt-8">
-                <h1 className="font-bold text-4xl">{recipeData.title}</h1>
-                <p className="font-bold text-xl">
-                  Youtube Channel: {recipeData.channel}
-                </p>
-              </div>
-
-              {/*Youtube Video Info*/}
-              <div className="flex justify-center mb-6">
-                <div className="">
+        <div className="w-full max-w-3xl mt-8">
+          {loading ? (
+            <UploadRecipeSkeleton />
+          ) : recipeData ? (
+            <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-10">
+              <div className="flex flex-col gap-12">
+                {" "}
+                {/* Remove md:flex-row to always stack */}
+                {/* Left: Thumbnail and Info */}
+                <div className="flex-1 flex flex-col items-center">
                   <Image
-                    src={recipeData.thumbnail} //Youtube thumbnail can be get from the google api
+                    src={recipeData.thumbnail}
                     alt="Recipe image"
-                    width={400}
-                    height={300}
+                    width={320}
+                    height={240}
+                    className="rounded-lg border border-orange-200 shadow"
                   />
-                  <div className="flex mt-2">
-                    <span className="w-1/2">
-                      <span className="font-bold">Ready In:</span>{" "}
-                      {recipeData.duration}
+                  <h2 className="text-2xl font-bold mt-4 text-orange-700 dark:text-orange-300 text-center">
+                    {recipeData.title}
+                  </h2>
+                  <p className="text-md text-gray-700 dark:text-gray-300 mt-1 text-center">
+                    <span className="font-semibold">Channel:</span>{" "}
+                    {recipeData.channel}
+                  </p>
+                  <div className="flex justify-center gap-4 mt-2">
+                    <span className="bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-200 px-3 py-1 rounded-full text-sm font-semibold">
+                      Ready In: {recipeData.duration}
                     </span>
-                    <span className="w-1/2">
-                      <span className="font-bold">Serves:</span>{" "}
-                      {recipeData.serving}
+                    <span className="bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-200 px-3 py-1 rounded-full text-sm font-semibold">
+                      Serves: {recipeData.serving}
                     </span>
                   </div>
                 </div>
-              </div>
-
-              {/* Ingredients and Instructions */}
-              <div className="flex flex-row gap-8">
-                {/* Ingredients */}
-                <div className="flex-1 border-2 border-black p-4">
-                  <h2 className="font-bold mb-2 text-2xl">Ingredients</h2>
-                  {Array.isArray(recipeData.ingredients) &&
-                    recipeData.ingredients.map(
-                      (ingredient: Ingredient, idx: number) => (
-                        <div key={idx} className="flex gap-2 mb-2 items-center">
-                          {/* Name */}
-                          <span className="font-medium w-1/2">
-                            {ingredient.name}
-                          </span>
-                          {/* Quantity */}
-                          <span className="text-gray-700 w-1/2">
-                            {ingredient.quantity}
-                          </span>
-                        </div>
-                      )
-                    )}
-
-                    <p className="text-gray-500 mt-4 text-sm">
-                    Note: Ingredients without a specific quantity are marked as "N/A". 
+                {/* Right: Ingredients and Instructions */}
+                <div className="flex-1 flex flex-col gap-8">
+                  <div>
+                    <h3 className="text-xl font-bold mb-2 text-orange-600 dark:text-orange-300">
+                      Ingredients
+                    </h3>
+                    <ul className="list-disc list-inside space-y-1">
+                      {Array.isArray(recipeData.ingredients) &&
+                        recipeData.ingredients.map(
+                          (ingredient: Ingredient, idx: number) => (
+                            <li
+                              key={idx}
+                              className="flex justify-between text-gray-800 dark:text-gray-200"
+                            >
+                              <span>{ingredient.name}</span>
+                              <span className="text-gray-500">
+                                {ingredient.quantity}
+                              </span>
+                            </li>
+                          )
+                        )}
+                    </ul>
+                    <p className="text-gray-400 mt-2 text-xs">
+                      Note: Ingredients without a specific quantity are marked
+                      as "N/A".
                     </p>
-                </div>
-                {/* Instructions */}
-                <div className="flex-1 border-2 border-black p-4">
-                  <h2 className="font-bold mb-2 text-2xl">Instructions</h2>
-                  {Array.isArray(recipeData.instructions) &&
-                    recipeData.instructions.map(
-                      (instruction: Instruction, idx: number) => (
-                        <div key={idx} className="flex gap-2 mb-2 items-center">
-                          {/* Name */}
-                          <span className="font-medium">
-                            {instruction.step}
-                          </span>
-                          {/* Quantity */}
-                          <span className="text-gray-700 ">
-                            {instruction.description}
-                          </span>
-                        </div>
-                      )
-                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2 text-orange-600 dark:text-orange-300">
+                      Instructions
+                    </h3>
+                    <ol className="list-decimal list-inside space-y-1">
+                      {Array.isArray(recipeData.instructions) &&
+                        recipeData.instructions.map(
+                          (instruction: Instruction, idx: number) => (
+                            <li
+                              key={idx}
+                              className="text-gray-800 dark:text-gray-200"
+                            >
+                              <span className="font-semibold">
+                                {instruction.description}
+                              </span>
+                            </li>
+                          )
+                        )}
+                    </ol>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          null
-        )}
-      </div>
+          ) : null}
+        </div>
+      </main>
     </div>
   );
 }
