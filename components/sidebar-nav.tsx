@@ -12,8 +12,8 @@ const navigationItems = [
   { icon: Home, label: "Home", href: "/Recipes" },
   { icon: Upload, label: "Upload Recipe", href: "/UploadRecipe" },
   { icon: BookOpen, label: "My Recipes", href: "/Recipes" },
-  { icon: Heart, label: "Favorites", href: "#favorites" },
-  { icon: Settings, label: "Settings", href: "#settings" },
+  { icon: Heart, label: "Favorites", href: "/Favorites" },
+  { icon: Settings, label: "Settings", href: "/Settings" },
 ];
 
 export function SidebarNav() {
@@ -41,7 +41,7 @@ export function SidebarNav() {
             </div>
             <nav className="flex-1 p-2">
               {navigationItems.map((item) => (
-                <a
+                <Link
                   key={item.label}
                   href={item.href}
                   onClick={() => setActiveItem(item.label)}
@@ -51,10 +51,12 @@ export function SidebarNav() {
                       ? "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300"
                       : "text-gray-700 dark:text-gray-300"
                   )}
+                  scroll={false}
+                  prefetch={true}
                 >
                   <item.icon className="h-5 w-5" />
                   <span>{item.label}</span>
-                </a>
+                </Link>
               ))}
             </nav>
           </div>
@@ -97,6 +99,8 @@ export function SidebarNav() {
               // Center icon when collapsed
               "md:justify-center lg:justify-start"
             )}
+            scroll={false}
+            prefetch={true}
           >
             <item.icon className="h-5 w-5 flex-shrink-0" />
             {/* Hide label on md, show on lg */}

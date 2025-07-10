@@ -5,32 +5,17 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Search, Grid3X3, List } from "lucide-react"
-import { RecipeCard } from "@/components/recipe-card"
 import { sampleRecipes } from "@/lib/recipe-data"
-import { cn } from "@/lib/utils"
-
-interface RecipesPageProps {
-  sidebarExpanded: boolean
-}
 
 const categories = ["All", "Breakfast", "Lunch", "Dinner", "Dessert", "Snacks", "Vegetarian", "Vegan", "Gluten-Free"]
 
 const sortOptions = ["Most Recent", "Most Popular", "Highest Rated", "Cook Time", "Difficulty"]
 
-export function RecipesPage({ sidebarExpanded }: RecipesPageProps) {
+export default function RecipesPage() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [sortBy, setSortBy] = useState("Most Recent")
-
-  // Calculate grid columns based on sidebar state
-  const getGridCols = () => {
-    if (sidebarExpanded) {
-      return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-    } else {
-      return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
-    }
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -100,13 +85,7 @@ export function RecipesPage({ sidebarExpanded }: RecipesPageProps) {
 
       {/* Content */}
       <div className="px-6 py-6">
-        {viewMode === "grid" ? (
-          <div className={cn("grid gap-6 transition-all duration-300", getGridCols())}>
-            {sampleRecipes.map((recipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} isCompact={!sidebarExpanded} />
-            ))}
-          </div>
-        ) : (
+
           <div className="space-y-4">
             {sampleRecipes.map((recipe) => (
               <div
@@ -131,7 +110,6 @@ export function RecipesPage({ sidebarExpanded }: RecipesPageProps) {
               </div>
             ))}
           </div>
-        )}
       </div>
     </div>
   )
