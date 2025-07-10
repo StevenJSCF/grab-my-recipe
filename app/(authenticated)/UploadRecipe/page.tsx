@@ -1,3 +1,5 @@
+"use client"
+
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -97,10 +99,7 @@ export default function UploadRecipePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-100 to-red-100 dark:from-gray-900 dark:to-gray-800 flex flex-col">
-      <SidebarNav
-        isExpanded={isSidebarExpanded}
-        onToggle={() => setIsSidebarExpanded((prev) => !prev)}
-      />
+      <SidebarNav/>
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-8">
         <div className="w-full max-w-xl bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 mt-8">
           <h1 className="text-4xl font-extrabold text-center text-orange-600 dark:text-orange-300 mb-4">
