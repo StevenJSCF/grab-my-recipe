@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { useMobile } from "@/hooks/use-mobile";
 
 const navigationItems = [
-  { icon: Home, label: "Home", href: "/Recipes" },
+  { icon: Home, label: "Home", href: "/Home" },
   { icon: Upload, label: "Upload Recipe", href: "/UploadRecipe" },
   { icon: BookOpen, label: "My Recipes", href: "/Recipes" },
   { icon: Heart, label: "Favorites", href: "/Favorites" },
