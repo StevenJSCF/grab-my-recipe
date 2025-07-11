@@ -2,18 +2,13 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Camera,
-  FileText,
   Save,
-  Smartphone,
   BookOpen,
-  Link,
   ArrowRight,
   Upload,
   Zap,
-  Heart,
 } from "lucide-react";
-import AuthButton from "./AuthButton";
+import AuthButton from "../components/AuthButton";
 
 export default function LandingPage() {
   return (
@@ -41,8 +36,7 @@ export default function LandingPage() {
             <span className="text-orange-500 block">Perfect Recipes</span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Upload a screenshot of recipe ingredients from YouTube or anywhere
-            else. Our smart OCR technology extracts and formats everything
+            Upload a cooking YouTube video URL. This app will extract and format everything
             perfectly, so you can save and organize your favorite recipes
             effortlessly.
           </p>
@@ -66,7 +60,7 @@ export default function LandingPage() {
             How It Works
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Transform any recipe screenshot into a perfectly formatted, saveable
+            Transform any YouTube video recipe into a perfectly formatted, saveable
             recipe in just three simple steps.
           </p>
         </div>
@@ -78,11 +72,10 @@ export default function LandingPage() {
                 <Upload className="w-8 h-8 text-orange-500" />
               </div>
               <h3 className="text-xl font-semibold mb-3">
-                1. Upload Screenshot
+                1. Paste URL
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Simply upload a screenshot of recipe ingredients from YouTube,
-                social media, or any source.
+                Simply paste the URL of a cooking YouTube video.
               </p>
             </CardContent>
           </Card>
@@ -96,8 +89,8 @@ export default function LandingPage() {
                 2. Extract & Format
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Our advanced OCR technology automatically extracts and formats
-                the ingredients list perfectly.
+                Our technology automatically extracts and formats
+                the ingredients list and instructions perfectly.
               </p>
             </CardContent>
           </Card>
@@ -109,119 +102,14 @@ export default function LandingPage() {
               </div>
               <h3 className="text-xl font-semibold mb-3">3. Save & Access</h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Add cooking instructions, YouTube links, and save to your
-                personal recipe collection.
+                Review and enjoy the recipe!.
               </p>
             </CardContent>
           </Card>
         </div>
       </section>
-      {/* Features Section */}
-      <section className="bg-white dark:bg-gray-800 py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Powerful Features
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Everything you need to build and organize your perfect recipe
-              collection.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Camera className="w-6 h-6 text-orange-500" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">
-                  Smart OCR Technology
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Advanced optical character recognition that accurately
-                  extracts ingredients from any screenshot.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                <BookOpen className="w-6 h-6 text-orange-500" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">
-                  Recipe Organization
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Save, categorize, and organize all your recipes in one
-                  convenient location.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                <FileText className="w-6 h-6 text-orange-500" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">
-                  Custom Instructions
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Add your own cooking instructions, notes, and modifications to
-                  any recipe.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Link className="w-6 h-6 text-orange-500" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">
-                  YouTube Integration
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Link recipes directly to their YouTube videos for easy
-                  reference while cooking.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Smartphone className="w-6 h-6 text-orange-500" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Mobile Friendly</h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Access your recipes anywhere, anytime with our responsive
-                  design.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Heart className="w-6 h-6 text-orange-500" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">
-                  Personal Collection
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  Build your personal recipe library with favorites, ratings,
-                  and custom tags.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      {/* <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
@@ -249,7 +137,7 @@ export default function LandingPage() {
             <p>&copy; 2025 GrabMyRecipe. All rights reserved.</p>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }
