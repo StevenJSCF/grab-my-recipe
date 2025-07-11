@@ -8,6 +8,14 @@ import { sampleRecipes } from "@/lib/recipe-data";
 
 export default function RecipesPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Filter recipes by search query (case-insensitive)
+  const filteredRecipes = sampleRecipes.filter(
+    (recipe) =>
+      recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      recipe.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -34,13 +42,24 @@ export default function RecipesPage() {
             </Button>
           </div>
         </div>
+        <div className="px-6 pb-4">
+          <div className="relative max-w-md mx-auto w-full">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Input
+              placeholder="Search recipes..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Content */}
       <div className="px-6 py-6">
         {viewMode === "grid" ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {sampleRecipes.map((recipe) => (
+            {filteredRecipes.map((recipe) => (
               <div
                 key={recipe.id}
                 className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow hover:shadow-md transition-shadow flex flex-col"
@@ -61,7 +80,7 @@ export default function RecipesPage() {
           </div>
         ) : (
           <div className="space-y-4">
-            {sampleRecipes.map((recipe) => (
+            {filteredRecipes.map((recipe) => (
               <div
                 key={recipe.id}
                 className="bg-white dark:bg-gray-800 rounded-lg p-4 flex items-center space-x-4 hover:shadow-md transition-shadow"
