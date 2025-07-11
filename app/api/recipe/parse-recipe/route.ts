@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function parseTranscript(transcript: string) {
+async function parseTranscript(transcript: string) {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
@@ -44,7 +44,7 @@ export async function parseTranscript(transcript: string) {
           role: "system",
           content: `You are a helpful assistant designed to scrape the given cooking youtube video and output a JSON as shown in the example.
                     You will be given a transcript and the video description, In case you cannot find the required info inside the transcript search the description. 
-                    For ingredients that dont have an ammount use N/A this doesn't apply to the ingredients that don't have an exact ammount but you can say or what the video says for example: splash of milk or 2 drops of oil
+                    For ingredients that dont have an amount use N/A this doesn't apply to the ingredients that don't have an exact ammount but you can say or what the video says for example: splash of milk or 2 drops of oil
                     Can you also calculat ethe duration of the recipe, it only have to be an approx. Sane with the serving size   
           Please send the JSON in this format:
           {
