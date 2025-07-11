@@ -1,5 +1,5 @@
 import React from "react";
-import { BookOpen, Upload, Heart } from "lucide-react";
+import { BookOpen, Upload } from "lucide-react";
 import Link from "next/link";
 
 export default function HomePage() {

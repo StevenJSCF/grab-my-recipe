@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(result);
   } catch (e) {
     return NextResponse.json(
-      { error: "Failed to parse transcript" },
+      { error: "Failed to parse transcript: " + e},
       { status: 500 }
     );
   }
@@ -96,46 +96,46 @@ async function parseTranscript(transcript: string) {
 
     return response;
 
-    //EDGE CASES
-    // Check if the conversation was too long for the context window, resulting in incomplete JSON
-    if (
-      response.status === "incomplete" &&
-      response.incomplete_details?.reason === "max_output_tokens"
-    ) {
-      // your code should handle this error case
-    }
+    // //EDGE CASES
+    // // Check if the conversation was too long for the context window, resulting in incomplete JSON
+    // if (
+    //   response.status === "incomplete" &&
+    //   response.incomplete_details?.reason === "max_output_tokens"
+    // ) {
+    //   // your code should handle this error case
+    // }
 
-    // Check if the OpenAI safety system refused the request and generated a refusal instead
-    // Check if the first output item has a 'content' property and its first element is a refusal
-    if (
-      response.output[0] &&
-      "content" in response.output[0] &&
-      Array.isArray((response.output[0] as any).content) &&
-      (response.output[0] as any).content[0]?.type === "refusal"
-    ) {
-      // your code should handle this error case
-      // In this case, the .content field will contain the explanation (if any) that the model generated for why it is refusing
-      console.log((response.output[0] as any).content[0].refusal);
-    }
+    // // Check if the OpenAI safety system refused the request and generated a refusal instead
+    // // Check if the first output item has a 'content' property and its first element is a refusal
+    // if (
+    //   response.output[0] &&
+    //   "content" in response.output[0] &&
+    //   Array.isArray((response.output[0] as any).content) &&
+    //   (response.output[0] as any).content[0]?.type === "refusal"
+    // ) {
+    //   // your code should handle this error case
+    //   // In this case, the .content field will contain the explanation (if any) that the model generated for why it is refusing
+    //   console.log((response.output[0] as any).content[0].refusal);
+    // }
 
-    // Check if the model's output included restricted content, so the generation of JSON was halted and may be partial
-    if (
-      response.status === "incomplete" &&
-      response.incomplete_details?.reason === "content_filter"
-    ) {
-      // your code should handle this error case
-    }
+    // // Check if the model's output included restricted content, so the generation of JSON was halted and may be partial
+    // if (
+    //   response.status === "incomplete" &&
+    //   response.incomplete_details?.reason === "content_filter"
+    // ) {
+    //   // your code should handle this error case
+    // }
 
-    if (response.status === "completed") {
-      // In this case the model has either successfully finished generating the JSON object according to your schema, or the model generated one of the tokens you provided as a "stop token"
-      // if (apiKeys.stop_tokens.length === 0 || response.output_text.endsWith(apiKeys.stop_tokens[0])) {
-      //   // If you didn't specify any stop tokens, then the generation is complete and the content key will contain the serialized JSON object
-      //   // This will parse successfully and should now contain  {"winner": "Los Angeles Dodgers"}
-      //   console.log(JSON.parse(response.output_text))
-      // } else {
-      //   // Check if the response.output_text ends with one of your stop tokens and handle appropriately
-      // }
-    }
+    // if (response.status === "completed") {
+    //   // In this case the model has either successfully finished generating the JSON object according to your schema, or the model generated one of the tokens you provided as a "stop token"
+    //   // if (apiKeys.stop_tokens.length === 0 || response.output_text.endsWith(apiKeys.stop_tokens[0])) {
+    //   //   // If you didn't specify any stop tokens, then the generation is complete and the content key will contain the serialized JSON object
+    //   //   // This will parse successfully and should now contain  {"winner": "Los Angeles Dodgers"}
+    //   //   console.log(JSON.parse(response.output_text))
+    //   // } else {
+    //   //   // Check if the response.output_text ends with one of your stop tokens and handle appropriately
+    //   // }
+    // }
   } catch (e) {
     // Your code should handle errors here, for example a network error calling the API
     console.error(e);

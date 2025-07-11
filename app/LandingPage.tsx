@@ -2,16 +2,11 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Camera,
-  FileText,
   Save,
-  Smartphone,
   BookOpen,
-  Link,
   ArrowRight,
   Upload,
   Zap,
-  Heart,
 } from "lucide-react";
 import AuthButton from "../components/AuthButton";
 

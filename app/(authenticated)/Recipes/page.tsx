@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Grid3X3, List } from "lucide-react";
 import { sampleRecipes } from "@/lib/recipe-data";
-
+import Image from "next/image";
 export default function RecipesPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchQuery, setSearchQuery] = useState("");
@@ -64,10 +64,12 @@ export default function RecipesPage() {
                 key={recipe.id}
                 className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow hover:shadow-md transition-shadow flex flex-col"
               >
-                <img
+                <Image
                   src={recipe.image || "/placeholder.svg"}
                   alt={recipe.title}
                   className="w-full h-40 object-cover rounded-md mb-3"
+                  width={640}
+                  height={480}
                 />
                 <h3 className="font-semibold text-lg mb-1 text-gray-900 dark:text-white">
                   {recipe.title}
@@ -85,10 +87,12 @@ export default function RecipesPage() {
                 key={recipe.id}
                 className="bg-white dark:bg-gray-800 rounded-lg p-4 flex items-center space-x-4 hover:shadow-md transition-shadow"
               >
-                <img
+                <Image
                   src={recipe.image || "/placeholder.svg"}
                   alt={recipe.title}
                   className="w-24 h-24 object-cover rounded-lg"
+                  width={640}
+                  height={480}
                 />
                 <div className="flex-1">
                   <h3 className="font-semibold text-lg mb-1 text-gray-900 dark:text-white">

@@ -74,7 +74,10 @@ model Recipe {
   title     String
   ingredient Ingredient[] 
   instruction Instruction[]
-  description String?
+  channel   String
+  image     String
+  duration  String
+  serving   String
   favorite  Boolean @default(false)
   user      User?    @relation(fields: [userId], references: [id]) //virtial prisma relation
   userId    String @db.ObjectId

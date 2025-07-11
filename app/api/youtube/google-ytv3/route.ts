@@ -16,6 +16,6 @@ export async function POST(req: NextRequest) {
     const youtubeData = await youtubeRes.json();
     return NextResponse.json(youtubeData);
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch YouTube metadata" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch YouTube metadata: "  + error}, { status: 500 });
   }
 }

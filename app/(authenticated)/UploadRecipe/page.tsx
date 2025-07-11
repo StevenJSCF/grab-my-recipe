@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
@@ -7,10 +7,26 @@ import { Ingredient, Instruction } from "@/lib/generated/prisma/client";
 import Image from "next/image";
 import { UploadRecipeSkeleton } from "@/components/UploadRecipeSkeleton";
 import { toast } from "react-hot-toast";
+
+type RecipeData = {
+  title: string;
+  description: string | null;
+  favorite: boolean;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  image: string;
+  channel: string;
+  duration: string;
+  serving: string;
+  ingredients: Ingredient[];
+  instructions: Instruction[];
+  // add any other fields you use
+};
+
 export default function UploadRecipePage() {
   const [url, setUrl] = useState("");
-  const [recipeData, setRecipeData] = useState<any>(null);
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+  const [recipeData, setRecipeData] = useState<RecipeData | null>(null);
   const [loading, setLoading] = useState(false);
 
   const getVideoId = (url: string) => {
@@ -54,7 +70,7 @@ export default function UploadRecipePage() {
         }
         const videoInfo = youtubeData.items[0];
         const channel = videoInfo.snippet.channelTitle;
-        const thumbnail = videoInfo.snippet.thumbnails.maxres.url;
+        const image = videoInfo.snippet.images.maxres.url;
         const title = videoInfo.snippet.title;
         const description = videoInfo.snippet.description;
         // Combine transcript and video desc
@@ -70,7 +86,7 @@ export default function UploadRecipePage() {
         const fullRecipe = {
           ...parsedRecipe,
           channel,
-          thumbnail,
+          image,
           title, // This will overwrite parsedRecipe.title
         };
 
@@ -130,10 +146,10 @@ export default function UploadRecipePage() {
               <div className="flex flex-col gap-12">
                 {" "}
                 {/* Remove md:flex-row to always stack */}
-                {/* Left: Thumbnail and Info */}
+                {/* Left: image and Info */}
                 <div className="flex-1 flex flex-col items-center">
                   <Image
-                    src={recipeData.thumbnail}
+                    src={recipeData.image}
                     alt="Recipe image"
                     width={320}
                     height={240}
@@ -179,7 +195,7 @@ export default function UploadRecipePage() {
                     </ul>
                     <p className="text-gray-400 mt-2 text-xs">
                       Note: Ingredients without a specific quantity are marked
-                      as "N/A".
+                      as &quot;N/A&quot;.
                     </p>
                   </div>
                   <div>
