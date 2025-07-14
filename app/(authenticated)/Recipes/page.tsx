@@ -88,12 +88,15 @@ export default function RecipesPage() {
                   src={recipe.image || "/placeholder.svg"}
                   alt={recipe.title}
                   className="w-full h-40 object-cover rounded-md mb-3"
-                  width={640}
-                  height={480}
+                  width={200}
+                  height={200}
                 />
                 <h3 className="font-semibold text-lg mb-1 text-gray-900 dark:text-white">
                   {recipe.title}
                 </h3>
+                <h2>
+                  {recipe.channel}
+                </h2>
               </div>
             ))}
           </div>
