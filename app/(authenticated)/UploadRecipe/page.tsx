@@ -56,7 +56,23 @@ export default function UploadRecipePage() {
         }
         const videoInfo = youtubeData.items[0];
         const channel = videoInfo.snippet.channelTitle;
-        const image = videoInfo.snippet.thumbnails.maxres.url;
+        //Some videos dont have certain size
+        let image = "";
+        const thumbs = videoInfo.snippet.thumbnails;
+        if (thumbs.maxres && thumbs.maxres.url) {
+          image = thumbs.maxres.url;
+        } else if (thumbs.standard && thumbs.standard.url) {
+          image = thumbs.standard.url;
+        } else if (thumbs.high && thumbs.high.url) {
+          image = thumbs.high.url;
+        } else if (thumbs.medium && thumbs.medium.url) {
+          image = thumbs.medium.url;
+        } else if (thumbs.default && thumbs.default.url) {
+          image = thumbs.default.url;
+        } else {
+          image = ""; // fallback if none exist
+        }
+
         const title = videoInfo.snippet.title;
         const description = videoInfo.snippet.description;
         // Combine transcript and video desc
@@ -99,30 +115,39 @@ export default function UploadRecipePage() {
   };
 
   //Saving recipe
- const saveRecipe = async () => {
-  if (!recipeData) {
-    toast.error("No recipe to save. Please extract a recipe first.");
-    return;
-  }
-  try {
-    
-    console.log("this is the form data before sending to the backend: " + JSON.stringify(recipeData))
-    const response = await fetch("/api/recipe/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(recipeData),
-    });
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Failed to save recipe. Status:", response.status, "Response:", errorText);
-      throw new Error(`Failed to save recipe: ${response.status} - ${errorText}`);
+  const saveRecipe = async () => {
+    if (!recipeData) {
+      toast.error("No recipe to save. Please extract a recipe first.");
+      return;
     }
-    toast.success("Recipe saved successfully!");
-  } catch (error) {
-    toast.error("Error saving recipe. Please try again.");
-    console.error("Save recipe error:", error);
-  }
-};
+    try {
+      console.log(
+        "this is the form data before sending to the backend: " +
+          JSON.stringify(recipeData)
+      );
+      const response = await fetch("/api/recipe/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(recipeData),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(
+          "Failed to save recipe. Status:",
+          response.status,
+          "Response:",
+          errorText
+        );
+        throw new Error(
+          `Failed to save recipe: ${response.status} - ${errorText}`
+        );
+      }
+      toast.success("Recipe saved successfully!");
+    } catch (error) {
+      toast.error("Error saving recipe. Please try again.");
+      console.error("Save recipe error:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen dark:from-gray-900 dark:to-gray-800 flex flex-col">

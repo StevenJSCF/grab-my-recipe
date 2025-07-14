@@ -9,7 +9,6 @@ export async function POST(req: NextRequest) {
     // const session = await getServerSession(authOptions);
     // if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    console.log("this is the beginning of the post")
     const requestBody = await req.json();
 
     const recipeData: RecipeData = {
@@ -17,7 +16,7 @@ export async function POST(req: NextRequest) {
       ingredients: requestBody.ingredients,
       instructions: requestBody.instructions,
       favorite: requestBody.favorite || false,
-      userId: requestBody.userId || "", 
+      userId: requestBody.userId || "507f1f77bcf86cd799439011", // Need to change this later when the user is logged
       createdAt: new Date(),
       updatedAt: new Date(),
       image: requestBody.image || "",
@@ -26,11 +25,7 @@ export async function POST(req: NextRequest) {
       serving: requestBody.serving || "",
     }
 
-    console.log("this is the form data inside the POST: " + JSON.stringify(requestBody))
-    console.log("THIS IS THE RECIPE DATA: " + JSON.stringify(recipeData))
-
-
-    if (!recipeData) {
+    if (!recipeData ) {
       return NextResponse.json({ error: "Missing form data" }, { status: 400 });
     }
 
