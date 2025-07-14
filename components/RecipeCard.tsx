@@ -3,11 +3,11 @@ import { RecipeType } from "@/lib/types";
 import Image from "next/image";
 import { Ingredient, Instruction } from "@/lib/generated/prisma";
 
-type RecipeCardProps = {
+type ReactipeCardProps = {
   recipeData: RecipeType;
 };
 
-export default function RecipeCard({ recipeData }: RecipeCardProps) {
+export default function RecipeCard({ recipeData }: ReactipeCardProps) {
   return (
     <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-10">
       <div className="flex flex-col gap-12">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import RecipeCard from "@/components/RecipeCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Grid3X3, List } from "lucide-react";
@@ -12,6 +13,8 @@ export default function RecipesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [recipes, setRecipes] = useState<RecipeType[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedRecipe, setSelectedRecipe] = useState<RecipeType | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   // Fetch recipes from backend API
   const getRecipes = async () => {
@@ -82,21 +85,26 @@ export default function RecipesPage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {recipes.map((recipe) => (
               <div
-                className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow hover:shadow-md transition-shadow flex flex-col"
+                className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow hover:shadow-md transition-shadow flex flex-col cursor-pointer"
+                onClick={() => {
+                  setSelectedRecipe(recipe);
+                  console.log("Selected recipe:", recipe);
+                  setShowModal(true);
+                }}
               >
                 <Image
                   src={recipe.image || "/placeholder.svg"}
                   alt={recipe.title}
-                  className="w-full h-40 object-cover rounded-md mb-3"
+                  className="w-full h-40 object-cover rounded-lg mb-3"
                   width={200}
                   height={200}
                 />
-                <h3 className="font-semibold text-lg mb-1 text-gray-900 dark:text-white">
+                <h3 className="font-bold text-lg mb-1 text-gray-900 dark:text-white line-clamp-2">
                   {recipe.title}
                 </h3>
-                <h2>
+                <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
                   {recipe.channel}
-                </h2>
+                </div>
               </div>
             ))}
           </div>
@@ -104,14 +112,18 @@ export default function RecipesPage() {
           <div className="space-y-4">
             {recipes.map((recipe) => (
               <div
-                className="bg-white dark:bg-gray-800 rounded-lg p-4 flex items-center space-x-4 hover:shadow-md transition-shadow"
+                className="bg-white dark:bg-gray-800 rounded-lg p-4 flex items-center space-x-4 hover:shadow-md transition-shadow cursor-pointer"
+                onClick={() => {
+                  setSelectedRecipe(recipe);
+                  setShowModal(true);
+                }}
               >
                 <Image
                   src={recipe.image || "/placeholder.svg"}
                   alt={recipe.title}
                   className="w-24 h-24 object-cover rounded-lg"
-                  width={640}
-                  height={480}
+                  width={200}
+                  height={200}
                 />
                 <div className="flex-1">
                   <h3 className="font-semibold text-lg mb-1 text-gray-900 dark:text-white">
@@ -120,6 +132,28 @@ export default function RecipesPage() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Modal for RecipeCard */}
+        {showModal && selectedRecipe && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-lg"
+            onClick={() => setShowModal(false)}
+          >
+            <div
+              className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 max-w-2xl w-full relative max-h-[80vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 dark:hover:text-white"
+                onClick={() => setShowModal(false)}
+                aria-label="Close"
+              >
+                &times;
+              </button>
+              <RecipeCard recipeData={selectedRecipe} />
+            </div>
           </div>
         )}
       </div>

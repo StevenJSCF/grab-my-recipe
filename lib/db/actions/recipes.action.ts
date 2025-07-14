@@ -3,7 +3,13 @@ import prisma from "@/lib/prisma";
 // Get all recipes
 // Here I will need to get all recipes by userId
 export const getRecipes = async () => {
-  return await prisma.recipe.findMany();
+const recipes = await prisma.recipe.findMany({
+  include: {
+    ingredients: true,
+    instructions: true,
+  },
+});
+return recipes;
 };
 
 // Get a single recipe by ID
