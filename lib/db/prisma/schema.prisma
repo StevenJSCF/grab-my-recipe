@@ -67,13 +67,11 @@ model Instruction {
   recipeId  String?  @db.ObjectId
 }
 
-
-
 model Recipe {
   id        String      @id @default(auto()) @map("_id") @db.ObjectId //Mongo default id is _id
   title     String
-  ingredient Ingredient[] 
-  instruction Instruction[]
+  ingredients Ingredient[] 
+  instructions Instruction[]
   channel   String
   image     String
   duration  String
