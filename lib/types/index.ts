@@ -2,7 +2,7 @@ import { Ingredient, Instruction } from "../generated/prisma";
 
 
 
-export type RecipeData = {
+export type RecipeType = {
   title: string;
   ingredients: Ingredient[];
   instructions: Instruction[];

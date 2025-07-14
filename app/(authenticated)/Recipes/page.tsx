@@ -1,21 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Grid3X3, List } from "lucide-react";
-import { sampleRecipes } from "@/lib/recipe-data";
 import Image from "next/image";
+import { RecipeType } from "@/lib/types";
+
 export default function RecipesPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchQuery, setSearchQuery] = useState("");
+  const [recipes, setRecipes] = useState<RecipeType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch recipes from backend API
+  const getRecipes = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/recipe/getRecipes");
+      if (!res.ok) throw new Error("Failed to fetch recipes");
+      const data = await res.json();
+      setRecipes(data.recipes);
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getRecipes();
+  }, []);
 
   // Filter recipes by search query (case-insensitive)
-  const filteredRecipes = sampleRecipes.filter(
-    (recipe) =>
-      recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      recipe.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredRecipes = recipes.filter(
+  //   (recipe) =>
+  //     recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -59,9 +80,8 @@ export default function RecipesPage() {
       <div className="px-6 py-6">
         {viewMode === "grid" ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredRecipes.map((recipe) => (
+            {recipes.map((recipe) => (
               <div
-                key={recipe.id}
                 className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow hover:shadow-md transition-shadow flex flex-col"
               >
                 <Image
@@ -74,17 +94,13 @@ export default function RecipesPage() {
                 <h3 className="font-semibold text-lg mb-1 text-gray-900 dark:text-white">
                   {recipe.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-2 line-clamp-2">
-                  {recipe.description}
-                </p>
               </div>
             ))}
           </div>
         ) : (
           <div className="space-y-4">
-            {filteredRecipes.map((recipe) => (
+            {recipes.map((recipe) => (
               <div
-                key={recipe.id}
                 className="bg-white dark:bg-gray-800 rounded-lg p-4 flex items-center space-x-4 hover:shadow-md transition-shadow"
               >
                 <Image
@@ -98,9 +114,6 @@ export default function RecipesPage() {
                   <h3 className="font-semibold text-lg mb-1 text-gray-900 dark:text-white">
                     {recipe.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-2 line-clamp-2">
-                    {recipe.description}
-                  </p>
                 </div>
               </div>
             ))}

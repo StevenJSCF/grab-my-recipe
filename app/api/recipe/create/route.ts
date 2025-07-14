@@ -1,6 +1,6 @@
 import { createRecipe } from "@/lib/db/actions/recipes.action";
 import { NextRequest, NextResponse } from "next/server";
-import { RecipeData } from "@/lib/types";
+import { RecipeType } from "@/lib/types";
 
 // /api/recipes/create
 export async function POST(req: NextRequest) {
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
 
     const requestBody = await req.json();
 
-    const recipeData: RecipeData = {
+    const recipeData: RecipeType = {
       title: requestBody.title,
       ingredients: requestBody.ingredients,
       instructions: requestBody.instructions,

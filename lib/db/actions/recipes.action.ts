@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
-import { RecipeData } from "@/lib/types";
 
 // Get all recipes
+// Here I will need to get all recipes by userId
 export const getRecipes = async () => {
   return await prisma.recipe.findMany();
 };
@@ -10,11 +10,6 @@ export const getRecipes = async () => {
 export const getRecipeById = async (id: string) => {
   return await prisma.recipe.findUnique({ where: { id } });
 };
-
-// Create a new recipe
-// export const createRecipe = async (data: any) => {
-//   return await prisma.recipe.create({ data  });
-// };
 
 export const createRecipe = async (data: {
   title: string;

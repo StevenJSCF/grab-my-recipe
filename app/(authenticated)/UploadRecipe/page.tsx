@@ -7,11 +7,11 @@ import { Ingredient, Instruction } from "@/lib/generated/prisma/client";
 import Image from "next/image";
 import { UploadRecipeSkeleton } from "@/components/UploadRecipeSkeleton";
 import { toast } from "react-hot-toast";
-import { RecipeData } from "@/lib/types";
+import { RecipeType } from "@/lib/types";
 
 export default function UploadRecipePage() {
   const [url, setUrl] = useState("");
-  const [recipeData, setRecipeData] = useState<RecipeData | null>(null);
+  const [recipeData, setRecipeData] = useState<RecipeType | null>(null);
   const [loading, setLoading] = useState(false);
   const [uploadRecipe, setUploadRecipe] = useState(true);
 
