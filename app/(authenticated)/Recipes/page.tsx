@@ -1,19 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import RecipeCard from "@/components/RecipeCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Grid3X3, List } from "lucide-react";
-import { Heart } from "lucide-react";
+import { Heart, Edit } from "lucide-react";
 import Image from "next/image";
 import { RecipeType } from "@/lib/types";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function RecipesPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchQuery, setSearchQuery] = useState("");
-  const [recipes, setRecipes] = useState<RecipeType[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Remove manual recipes and loading state, use React Query instead
   const [selectedRecipe, setSelectedRecipe] = useState<RecipeType | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [filterType, setFilterType] = useState<
@@ -22,21 +22,23 @@ export default function RecipesPage() {
   // New state for sorting by date
   const [sortDate, setSortDate] = useState<"newest" | "oldest">("newest");
 
-  // Fetch recipes from backend API
-  const getRecipes = async () => {
-    try {
-      setLoading(true);
+  // Use React Query for fetching recipes
+  const queryClient = useQueryClient();
+  const {
+    data: recipes,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["recipes"],
+    queryFn: async () => {
       const res = await fetch("/api/recipe/getRecipes");
       if (!res.ok) throw new Error("Failed to fetch recipes");
       const data = await res.json();
-      setRecipes(data.recipes);
-    } catch (error) {
-      console.error("Error fetching recipes:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      return data.recipes;
+    },
+  });
 
+  // Update recipe and refetch recipes after mutation
   const updateRecipe = async (
     id: string,
     fieldsToUpdate: Partial<RecipeType>
@@ -53,18 +55,14 @@ export default function RecipesPage() {
       if (!res.ok) throw new Error("Failed to update recipe");
       const data = await res.json();
       console.log("Update response data:", data);
-      setRecipes((prev) =>
-        prev.map((recipe) => (recipe.id === id ? data.recipe : recipe))
-      );
+      // Invalidate and refetch recipes
+      queryClient.invalidateQueries({ queryKey: ["recipes"] });
     } catch (error) {
       console.error("Error updating recipe:", error);
     }
   };
 
-  //Change this to use tankstack with query
-  useEffect(() => {
-    getRecipes();
-  }, []);
+  // No need for useEffect or manual fetching, React Query handles it
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -139,12 +137,20 @@ export default function RecipesPage() {
 
       {/* Content */}
       <div className="px-6 py-6">
-        {/* Filter recipes by search and favorites */}
-        {viewMode === "grid" ? (
+        {/* Show loading spinner or message if loading */}
+        {isLoading ? (
+          <div className="text-center text-gray-500 dark:text-gray-300 py-10">
+            Loading recipes...
+          </div>
+        ) : !recipes ? (
+          <div className="text-center text-red-500 py-10">
+            Failed to load recipes.
+          </div>
+        ) : viewMode === "grid" ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {recipes
               .slice() // copy array so sort doesn't mutate state
-              .sort((a, b) => {
+              .sort((a: RecipeType, b: RecipeType) => {
                 if (sortDate === "newest") {
                   return (
                     new Date(b.createdAt).getTime() -
@@ -157,7 +163,7 @@ export default function RecipesPage() {
                   );
                 }
               })
-              .filter((recipe) => {
+              .filter((recipe: RecipeType) => {
                 const matchesSearch = recipe.title
                   .toLowerCase()
                   .includes(searchQuery.toLowerCase());
@@ -167,7 +173,7 @@ export default function RecipesPage() {
                   return matchesSearch && !recipe.favorite;
                 return matchesSearch;
               })
-              .map((recipe) => (
+              .map((recipe: RecipeType) => (
                 <div
                   className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow hover:shadow-md transition-shadow flex flex-col cursor-pointer relative"
                   onClick={() => {
@@ -175,6 +181,7 @@ export default function RecipesPage() {
                     console.log("Selected recipe:", recipe);
                     setShowModal(true);
                   }}
+                  key={recipe.id}
                 >
                   <Image
                     src={recipe.image || "/placeholder.svg"}
@@ -186,83 +193,13 @@ export default function RecipesPage() {
                   <h3 className="font-bold text-lg mb-1 text-gray-900 dark:text-white line-clamp-2">
                     {recipe.title}
                   </h3>
-                  <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-1">
+                  <div className="flex flex-col gap-1 text-xs text-gray-500 dark:text-gray-400 mb-1">
                     <span className="text-base">{recipe.channel}</span>
-                    <button
-                      className={
-                        recipe.favorite
-                          ? "text-red-500 transition-colors"
-                          : "text-gray-600 hover:text-red-500 transition-colors"
-                      }
-                      aria-label="Favorite"
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        updateRecipe(recipe.id, { favorite: !recipe.favorite });
-                      }}
-                    >
-                      <Heart
-                        className="w-6 h-6"
-                        strokeWidth={recipe.favorite ? 0 : 2}
-                        fill={recipe.favorite ? "red" : "none"}
-                      />
-                    </button>
-                  </div>
-                </div>
-              ))}
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {recipes
-              .slice()
-              .sort((a, b) => {
-                if (sortDate === "newest") {
-                  return (
-                    new Date(b.createdAt).getTime() -
-                    new Date(a.createdAt).getTime()
-                  );
-                } else {
-                  return (
-                    new Date(a.createdAt).getTime() -
-                    new Date(b.createdAt).getTime()
-                  );
-                }
-              })
-              .filter((recipe) => {
-                const matchesSearch = recipe.title
-                  .toLowerCase()
-                  .includes(searchQuery.toLowerCase());
-                if (filterType === "favorites")
-                  return matchesSearch && recipe.favorite;
-                if (filterType === "non-favorites")
-                  return matchesSearch && !recipe.favorite;
-                return matchesSearch;
-              })
-              .map((recipe) => (
-                <div
-                  className="bg-white dark:bg-gray-800 rounded-lg p-4 flex items-center space-x-4 hover:shadow-md transition-shadow cursor-pointer"
-                  onClick={() => {
-                    setSelectedRecipe(recipe);
-                    setShowModal(true);
-                  }}
-                >
-                  <Image
-                    src={recipe.image || "/placeholder.svg"}
-                    alt={recipe.title}
-                    className="w-24 h-24 object-cover rounded-lg"
-                    width={200}
-                    height={200}
-                  />
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-lg mb-1 text-gray-900 dark:text-white">
-                      {recipe.title}
-                    </h3>
-                    <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-1">
-                      <span className="text-base">{recipe.channel}</span>
+                    <div className="flex gap-2 mt-1">
                       <button
                         className={
                           recipe.favorite
-                            ? "text-red-500 hover:text-rgray-600 transition-colors"
+                            ? "text-red-500 transition-colors"
                             : "text-gray-600 hover:text-red-500 transition-colors"
                         }
                         aria-label="Favorite"
@@ -280,6 +217,105 @@ export default function RecipesPage() {
                           fill={recipe.favorite ? "red" : "none"}
                         />
                       </button>
+                      <button
+                        className="text-gray-600 hover:text-orange-500 transition-colors"
+                        aria-label="Edit Recipe"
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          // Add edit logic/modal here
+                        }}
+                      >
+                        <Edit className="w-6 h-6" strokeWidth={2} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {recipes
+              .slice()
+              .sort((a: RecipeType, b: RecipeType) => {
+                if (sortDate === "newest") {
+                  return (
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                  );
+                } else {
+                  return (
+                    new Date(a.createdAt).getTime() -
+                    new Date(b.createdAt).getTime()
+                  );
+                }
+              })
+              .filter((recipe: RecipeType) => {
+                const matchesSearch = recipe.title
+                  .toLowerCase()
+                  .includes(searchQuery.toLowerCase());
+                if (filterType === "favorites")
+                  return matchesSearch && recipe.favorite;
+                if (filterType === "non-favorites")
+                  return matchesSearch && !recipe.favorite;
+                return matchesSearch;
+              })
+              .map((recipe: RecipeType) => (
+                <div
+                  className="bg-white dark:bg-gray-800 rounded-lg p-4 flex items-center space-x-4 hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => {
+                    setSelectedRecipe(recipe);
+                    setShowModal(true);
+                  }}
+                  key={recipe.id}
+                >
+                  <Image
+                    src={recipe.image || "/placeholder.svg"}
+                    alt={recipe.title}
+                    className="w-24 h-24 object-cover rounded-lg"
+                    width={200}
+                    height={200}
+                  />
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg mb-1 text-gray-900 dark:text-white">
+                      {recipe.title}
+                    </h3>
+                    <div className="flex flex-col gap-1 text-xs text-gray-500 dark:text-gray-400 mb-1">
+                      <span className="text-base">{recipe.channel}</span>
+                      <div className="flex gap-2 mt-1">
+                        <button
+                          className={
+                            recipe.favorite
+                              ? "text-red-500 transition-colors"
+                              : "text-gray-600 hover:text-red-500 transition-colors"
+                          }
+                          aria-label="Favorite"
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            updateRecipe(recipe.id, {
+                              favorite: !recipe.favorite,
+                            });
+                          }}
+                        >
+                          <Heart
+                            className="w-6 h-6"
+                            strokeWidth={recipe.favorite ? 0 : 2}
+                            fill={recipe.favorite ? "red" : "none"}
+                          />
+                        </button>
+                        <button
+                          className="text-gray-600 hover:text-orange-500 transition-colors"
+                          aria-label="Edit Recipe"
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            // Add edit logic/modal here
+                          }}
+                        >
+                          <Edit className="w-6 h-6" strokeWidth={2} />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
