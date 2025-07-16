@@ -92,7 +92,7 @@ export default function RecipesPage() {
           </div>
         </div>
         <div className="px-6 pb-4">
-          <div className="flex items-center gap-2 max-w-md mx-auto w-full">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 max-w-xl mx-auto w-full">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
@@ -102,9 +102,9 @@ export default function RecipesPage() {
                 className="pl-10"
               />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full sm:w-auto">
               {/* Filter type dropdown */}
-              <div className="relative">
+              <div className="relative flex-1 sm:flex-none">
                 <select
                   value={filterType}
                   onChange={(e) =>
@@ -120,7 +120,7 @@ export default function RecipesPage() {
                 </select>
               </div>
               {/* Sort by date dropdown */}
-              <div className="relative">
+              <div className="relative flex-1 sm:flex-none">
                 <select
                   value={sortDate}
                   onChange={(e) =>
