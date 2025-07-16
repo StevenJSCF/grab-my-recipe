@@ -5,6 +5,7 @@ import RecipeCard from "@/components/RecipeCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Grid3X3, List } from "lucide-react";
+import { Heart } from "lucide-react";
 import Image from "next/image";
 import { RecipeType } from "@/lib/types";
 
@@ -31,6 +32,31 @@ export default function RecipesPage() {
     }
   };
 
+  const updateRecipe = async (
+    id: string,
+    fieldsToUpdate: Partial<RecipeType>
+  ) => {
+    try {
+      const res = await fetch("/api/recipe/update", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, ...fieldsToUpdate }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update recipe");
+      const data = await res.json();
+      console.log("Update response data:", data);
+      setRecipes((prev) =>
+        prev.map((recipe) => (recipe.id === id ? data.recipe : recipe))
+      );
+    } catch (error) {
+      console.error("Error updating recipe:", error);
+    }
+  };
+
+  //Change this to use tankstack with query
   useEffect(() => {
     getRecipes();
   }, []);
@@ -85,7 +111,7 @@ export default function RecipesPage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {recipes.map((recipe) => (
               <div
-                className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow hover:shadow-md transition-shadow flex flex-col cursor-pointer"
+                className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow hover:shadow-md transition-shadow flex flex-col cursor-pointer relative"
                 onClick={() => {
                   setSelectedRecipe(recipe);
                   console.log("Selected recipe:", recipe);
@@ -102,8 +128,27 @@ export default function RecipesPage() {
                 <h3 className="font-bold text-lg mb-1 text-gray-900 dark:text-white line-clamp-2">
                   {recipe.title}
                 </h3>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                  {recipe.channel}
+                <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-1">
+                  <span className="text-base">{recipe.channel}</span>
+                  <button
+                    className={
+                      recipe.favorite
+                        ? "text-red-500 transition-colors"
+                        : "text-gray-600 hover:text-red-500 transition-colors"
+                    }
+                    aria-label="Favorite"
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      updateRecipe(recipe.id, { favorite: !recipe.favorite });
+                    }}
+                  >
+                    <Heart
+                      className="w-6 h-6"
+                      strokeWidth={recipe.favorite ? 0 : 2}
+                      fill={recipe.favorite ? "red" : "none"}
+                    />
+                  </button>
                 </div>
               </div>
             ))}
@@ -129,6 +174,28 @@ export default function RecipesPage() {
                   <h3 className="font-semibold text-lg mb-1 text-gray-900 dark:text-white">
                     {recipe.title}
                   </h3>
+                  <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-1">
+                    <span className="text-base">{recipe.channel}</span>
+                    <button
+                      className={
+                        recipe.favorite
+                          ? "text-red-500 hover:text-rgray-600 transition-colors"
+                          : "text-gray-600 hover:text-red-500 transition-colors"
+                      }
+                      aria-label="Favorite"
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        updateRecipe(recipe.id, { favorite: !recipe.favorite });
+                      }}
+                    >
+                      <Heart
+                        className="w-6 h-6"
+                        strokeWidth={recipe.favorite ? 0 : 2}
+                        fill={recipe.favorite ? "red" : "none"}
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

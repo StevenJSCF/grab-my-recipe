@@ -12,7 +12,6 @@ const navigationItems = [
   { icon: Home, label: "Home", href: "/Home" },
   { icon: Upload, label: "Upload Recipe", href: "/UploadRecipe" },
   { icon: BookOpen, label: "My Recipes", href: "/Recipes" },
-  { icon: Heart, label: "Favorites", href: "/Favorites" },
   { icon: Settings, label: "Settings", href: "/Settings" },
 ];
 

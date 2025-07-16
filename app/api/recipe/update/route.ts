@@ -1,14 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { updateRecipe } from "@/lib/db/actions/recipes.action";
 
-export async function UPDATE(req: NextRequest) {
+export async function PUT(req: NextRequest) {
   //   const userId = req.nextUrl.searchParams.get("userId");
   //   if (!userId) {
   //     return NextResponse.json({ error: "Missing userId" }, { status: 400 });
   //   }
 
+  console.log("here inside UPDATE");
+
   const body = await req.json();
   const { id, ...fieldsToUpdate } = body;
+
+  console.log ("This is the body", body)
 
   if (!id) {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });

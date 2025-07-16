@@ -11,7 +11,8 @@ export async function POST(req: NextRequest) {
 
     const requestBody = await req.json();
 
-    const recipeData: RecipeType = {
+    //Ignore the id field mongo will generate it
+    const recipeData: Omit<RecipeType, "id"> = {
       title: requestBody.title,
       ingredients: requestBody.ingredients,
       instructions: requestBody.instructions,
@@ -23,9 +24,9 @@ export async function POST(req: NextRequest) {
       channel: requestBody.channel || "",
       duration: requestBody.duration || "",
       serving: requestBody.serving || "",
-    }
+    };
 
-    if (!recipeData ) {
+    if (!recipeData) {
       return NextResponse.json({ error: "Missing form data" }, { status: 400 });
     }
 
