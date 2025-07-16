@@ -3,6 +3,7 @@ import { Ingredient, Instruction } from "../generated/prisma";
 
 
 export type RecipeType = {
+  id: string;
   title: string;
   ingredients: Ingredient[];
   instructions: Instruction[];
