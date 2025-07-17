@@ -26,6 +26,8 @@ export async function POST(req: NextRequest) {
       serving: requestBody.serving || "",
     };
 
+    console.log("Creating recipe with data:", recipeData);  
+
     if (!recipeData) {
       return NextResponse.json({ error: "Missing form data" }, { status: 400 });
     }

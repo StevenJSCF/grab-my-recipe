@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { updateRecipe } from "@/lib/db/actions/recipes.action";
+import { updateFavorite } from "@/lib/db/actions/recipes.action";
 
 export async function PUT(req: NextRequest) {
   //   const userId = req.nextUrl.searchParams.get("userId");
@@ -19,7 +19,7 @@ export async function PUT(req: NextRequest) {
   }
 
   // Update the recipe in the database with any provided fields
-  const updatedRecipe = await updateRecipe(id, fieldsToUpdate);
+  const updatedRecipe = await updateFavorite(id, fieldsToUpdate);
   return NextResponse.json({ recipe: updatedRecipe }, { status: 200 });
 }
 

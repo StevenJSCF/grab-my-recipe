@@ -66,30 +66,37 @@ export default function EditRecipeForm({ recipeData }: EditRecipeFormProps) {
   // Submit handler (to be connected to API)
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Remove id and recipeId from ingredients and instructions before sending prisma was complaining
+    const cleanedIngredients = ingredients.map(({ name, quantity }) => ({
+      name,
+      quantity,
+    }));
+    const cleanedInstructions = instructions.map(({ step, description }) => ({
+      step,
+      description,
+    }));
     const updatedRecipe = {
       ...recipeData,
       title,
       channel,
       duration,
       serving,
-      ingredients,
-      instructions,
+      ingredients: cleanedIngredients,
+      instructions: cleanedInstructions,
     };
-    console.log("Submitting updated recipe:", updatedRecipe.ingredients, updatedRecipe.instructions);
+    console.log("Submitting Ingredients:", updatedRecipe.ingredients);
+    console.log("Submitting Instructions:", updatedRecipe.instructions);
     updateRecipe(recipeData.id, {
-        title: updatedRecipe.title,
-        channel: updatedRecipe.channel,
-        duration: updatedRecipe.duration,
-        serving: updatedRecipe.serving,
-        // ingredients: updatedRecipe.ingredients,
-        // instructions: updatedRecipe.instructions,
+      title: updatedRecipe.title,
+      channel: updatedRecipe.channel,
+      duration: updatedRecipe.duration,
+      serving: updatedRecipe.serving,
+      ingredients: updatedRecipe.ingredients,
+      instructions: updatedRecipe.instructions,
     });
   };
 
-  const updateRecipe = async (
-    id: string,
-    fieldsToUpdate: Partial<RecipeType>
-  ) => {
+  const updateRecipe = async (id: string, fieldsToUpdate: any) => {
     try {
       const res = await fetch("/api/recipe/update", {
         method: "PUT",
@@ -99,11 +106,15 @@ export default function EditRecipeForm({ recipeData }: EditRecipeFormProps) {
         body: JSON.stringify({ id, ...fieldsToUpdate }),
       });
 
-      if (!res.ok) throw new Error("Failed to update recipe");
+      if (!res.ok) {
+        let errorText = await res.text();
+        console.error("API error response:", errorText);
+        throw new Error("Failed to update recipe");
+      }
       const data = await res.json();
       console.log("Update response data:", data);
       // Invalidate and refetch recipes
-    //   queryClient.invalidateQueries({ queryKey: ["recipes"] });
+      // queryClient.invalidateQueries({ queryKey: ["recipes"] });
     } catch (error) {
       console.error("Error updating recipe:", error);
     }

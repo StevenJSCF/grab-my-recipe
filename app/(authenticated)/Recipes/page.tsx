@@ -46,7 +46,7 @@ export default function RecipesPage() {
     fieldsToUpdate: Partial<RecipeType>
   ) => {
     try {
-      const res = await fetch("/api/recipe/update", {
+      const res = await fetch("/api/recipe/updateFavorite", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -59,10 +59,58 @@ export const createRecipe = async (data: {
   });
 };
 
-// Update a recipe
-export const updateRecipe = async (id: string, data: any) => {
+// Update a recipe favorite
+export const updateFavorite= async (id: string, data: any) => {
   ``;
   return await prisma.recipe.update({ where: { id }, data });
+};
+
+// update all recipe fields
+export const updateRecipe = async (
+  id: string,
+  data: {
+    title: string;
+    favorite: boolean;
+    image: string;
+    channel: string;
+    duration: string;
+    serving: string;
+    updatedAt: Date;
+    ingredients: { name: string; quantity: string }[];
+    instructions: { step: string; description: string }[];
+  }
+) => {
+  return await prisma.recipe.update({
+    where: { id },
+    data: {
+      title: data.title,
+      favorite: data.favorite,
+      image: data.image,
+      channel: data.channel,
+      duration: data.duration,
+      serving: data.serving,
+      updatedAt: data.updatedAt,
+      // Delete existing ones and recreate new ones
+      ingredients: {
+        deleteMany: {}, // deletes all ingredients related to this recipe
+        create: data.ingredients.map(({ name, quantity }) => ({
+          name,
+          quantity,
+        })),
+      },
+      instructions: {
+        deleteMany: {}, // deletes all instructions related to this recipe
+        create: data.instructions.map((instruction) => ({
+          ...instruction,
+          step: String(instruction.step),
+        })),
+      },
+    },
+    include: {
+      ingredients: true,
+      instructions: true,
+    },
+  });
 };
 
 // Delete a recipe
