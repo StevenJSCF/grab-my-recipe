@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import RecipeCard from "@/components/RecipeCard";
+import EditRecipeForm from "@/components/EditRecipeForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Grid3X3, List } from "lucide-react";
@@ -16,6 +17,7 @@ export default function RecipesPage() {
   // Remove manual recipes and loading state, use React Query instead
   const [selectedRecipe, setSelectedRecipe] = useState<RecipeType | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [filterType, setFilterType] = useState<
     "all" | "favorites" | "non-favorites"
   >("all");
@@ -62,7 +64,11 @@ export default function RecipesPage() {
     }
   };
 
-  // No need for useEffect or manual fetching, React Query handles it
+  // Edit modal logic
+  const handleEditClick = (recipe: RecipeType) => {
+    setSelectedRecipe(recipe);
+    setShowEditModal(true);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -223,7 +229,7 @@ export default function RecipesPage() {
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
-                          // Add edit logic/modal here
+                          handleEditClick(recipe);
                         }}
                       >
                         <Edit className="w-6 h-6" strokeWidth={2} />
@@ -310,7 +316,7 @@ export default function RecipesPage() {
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
-                            // Add edit logic/modal here
+                            handleEditClick(recipe);
                           }}
                         >
                           <Edit className="w-6 h-6" strokeWidth={2} />
@@ -322,7 +328,6 @@ export default function RecipesPage() {
               ))}
           </div>
         )}
-
         {/* Modal for RecipeCard */}
         {showModal && selectedRecipe && (
           <div
@@ -341,6 +346,27 @@ export default function RecipesPage() {
                 &times;
               </button>
               <RecipeCard recipeData={selectedRecipe} />
+            </div>
+          </div>
+        )}
+        {/* Modal for EditRecipeForm */}
+        {showEditModal && selectedRecipe && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-lg"
+            onClick={() => setShowEditModal(false)}
+          >
+            <div
+              className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 max-w-2xl w-full relative max-h-[80vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 dark:hover:text-white"
+                onClick={() => setShowEditModal(false)}
+                aria-label="Close"
+              >
+                &times;
+              </button>
+              <EditRecipeForm recipeData={selectedRecipe} />
             </div>
           </div>
         )}
