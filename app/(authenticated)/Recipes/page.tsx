@@ -29,7 +29,6 @@ export default function RecipesPage() {
   const {
     data: recipes,
     isLoading,
-    refetch,
   } = useQuery({
     queryKey: ["recipes"],
     queryFn: async () => {

@@ -61,7 +61,6 @@ export const createRecipe = async (data: {
 
 // Update a recipe favorite
 export const updateFavorite = async (id: string, data: any) => {
-  ``;
   return await prisma.recipe.update({ where: { id }, data });
 };
 

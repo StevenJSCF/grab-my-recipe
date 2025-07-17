@@ -107,7 +107,7 @@ export default function EditRecipeForm({ recipeData }: EditRecipeFormProps) {
       });
 
       if (!res.ok) {
-        let errorText = await res.text();
+        const errorText = await res.text();
         console.error("API error response:", errorText);
         throw new Error("Failed to update recipe");
       }
