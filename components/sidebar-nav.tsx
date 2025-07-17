@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Home, Upload, BookOpen, Heart, Settings, Menu } from "lucide-react";
+import { Home, Upload, BookOpen, Settings, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMobile } from "@/hooks/use-mobile";
 
@@ -12,7 +12,6 @@ const navigationItems = [
   { icon: Home, label: "Home", href: "/Home" },
   { icon: Upload, label: "Upload Recipe", href: "/UploadRecipe" },
   { icon: BookOpen, label: "My Recipes", href: "/Recipes" },
-  { icon: Heart, label: "Favorites", href: "/Favorites" },
   { icon: Settings, label: "Settings", href: "/Settings" },
 ];
 
