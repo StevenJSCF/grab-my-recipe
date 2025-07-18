@@ -303,14 +303,14 @@ export default function EditRecipeForm({
                   <div className="flex justify-end gap-2 mt-4">
                     <button
                       type="button"
-                      className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-2 px-4 rounded"
+                      className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-bold py-2 px-4 rounded-lg shadow"
                       onClick={closeInstructionModal}
                     >
                       Cancel
                     </button>
                     <button
                       type="button"
-                      className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded"
+                    className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg shadow"
                       onClick={saveInstructionModal}
                     >
                       Save
