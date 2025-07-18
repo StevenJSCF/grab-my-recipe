@@ -1,17 +1,48 @@
-import React from "react";
-import { SidebarNav } from "@/components/sidebar-nav";
+"use client";
 
-export default function AuthLayout({
+import type React from "react";
+import { useState } from "react";
+import { Inter } from "next/font/google";
+import "../globals.css";
+import { ThemeProvider } from "next-themes";
+import { SessionProvider } from "next-auth/react";
+import { Toaster } from "react-hot-toast";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { SidebarNav } from "@/components/sidebar-nav";
+const inter = Inter({ subsets: ["latin"] });
+
+export default function AuthenticatedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Initialize QueryClient for React Query
+  const [queryClient] = useState(() => new QueryClient());
+  const { data: session } = useSession();
+  if (!session) {
+    return redirect("/");
+  }
   return (
-    <div className="flex min-h-screen">
-      <SidebarNav />
-      <main className="flex-1 ml-0 md:ml-16 lg:ml-64 transition-all duration-300">
-        {children}
-      </main>
-    </div>
+    <SessionProvider>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <Toaster position="top-center" />
+
+        <div className="flex min-h-screen bg-gray-50">
+          <SidebarNav />
+          <main className="flex-1 md:ml-16 lg:ml-64 p-4">
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </main>
+        </div>
+      </ThemeProvider>
+    </SessionProvider>
   );
 }

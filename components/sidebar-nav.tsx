@@ -17,7 +17,7 @@ const navigationItems = [
 
 export function SidebarNav() {
   const isMobile = useMobile();
-  const [activeItem, setActiveItem] = useState("My Recipes");
+  const [activeItem, setActiveItem] = useState("Home");
 
   if (isMobile) {
     return (
