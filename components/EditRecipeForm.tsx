@@ -1,13 +1,20 @@
 import React, { useState } from "react";
+import { toast } from "react-hot-toast";
 import { RecipeType } from "@/lib/types";
 import Image from "next/image";
 import { Ingredient, Instruction } from "@/lib/generated/prisma";
 
 type EditRecipeFormProps = {
   recipeData: RecipeType;
+  onClose?: () => void;
+  onSave?: () => void;
 };
 
-export default function EditRecipeForm({ recipeData }: EditRecipeFormProps) {
+export default function EditRecipeForm({
+  recipeData,
+  onClose,
+  onSave,
+}: EditRecipeFormProps) {
   // Form state
   const [title, setTitle] = useState(recipeData.title);
   const [channel, setChannel] = useState(recipeData.channel);
@@ -19,6 +26,37 @@ export default function EditRecipeForm({ recipeData }: EditRecipeFormProps) {
   const [instructions, setInstructions] = useState<Instruction[]>(
     Array.isArray(recipeData.instructions) ? recipeData.instructions : []
   );
+
+  // Modal state for editing a single instruction
+  const [editingInstructionIdx, setEditingInstructionIdx] = useState<
+    number | null
+  >(null);
+  const [editingInstructionValue, setEditingInstructionValue] = useState("");
+
+  // Open modal for editing instruction
+  const openInstructionModal = (idx: number) => {
+    setEditingInstructionIdx(idx);
+    setEditingInstructionValue(instructions[idx]?.description || "");
+  };
+
+  // Save changes from modal
+  const saveInstructionModal = () => {
+    if (editingInstructionIdx !== null) {
+      setInstructions((prev) =>
+        prev.map((ins, i) =>
+          i === editingInstructionIdx
+            ? { ...ins, description: editingInstructionValue }
+            : ins
+        )
+      );
+      setEditingInstructionIdx(null);
+    }
+  };
+
+  // Close modal without saving
+  const closeInstructionModal = () => {
+    setEditingInstructionIdx(null);
+  };
 
   // Handlers for editing ingredients and instructions
   const handleIngredientChange = (
@@ -64,9 +102,9 @@ export default function EditRecipeForm({ recipeData }: EditRecipeFormProps) {
     setInstructions(instructions.filter((_, i) => i !== idx));
 
   // Submit handler (to be connected to API)
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Remove id and recipeId from ingredients and instructions before sending prisma was complaining
+    // Remove id and recipeId from ingredients and instructions before sending
     const cleanedIngredients = ingredients.map(({ name, quantity }) => ({
       name,
       quantity,
@@ -84,40 +122,39 @@ export default function EditRecipeForm({ recipeData }: EditRecipeFormProps) {
       ingredients: cleanedIngredients,
       instructions: cleanedInstructions,
     };
-    console.log("Submitting Ingredients:", updatedRecipe.ingredients);
-    console.log("Submitting Instructions:", updatedRecipe.instructions);
-    updateRecipe(recipeData.id, {
-      title: updatedRecipe.title,
-      channel: updatedRecipe.channel,
-      duration: updatedRecipe.duration,
-      serving: updatedRecipe.serving,
-      ingredients: updatedRecipe.ingredients,
-      instructions: updatedRecipe.instructions,
-    });
+    try {
+      await updateRecipe(recipeData.id, {
+        title: updatedRecipe.title,
+        channel: updatedRecipe.channel,
+        duration: updatedRecipe.duration,
+        serving: updatedRecipe.serving,
+        ingredients: updatedRecipe.ingredients,
+        instructions: updatedRecipe.instructions,
+      });
+      toast.success("Recipe updated!");
+      if (onSave) onSave();
+      else if (onClose) onClose();
+    } catch (error) {
+      toast.error("Failed to update recipe");
+    }
   };
 
   const updateRecipe = async (id: string, fieldsToUpdate: any) => {
-    try {
-      const res = await fetch("/api/recipe/update", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id, ...fieldsToUpdate }),
-      });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error("API error response:", errorText);
-        throw new Error("Failed to update recipe");
-      }
-      const data = await res.json();
-      console.log("Update response data:", data);
-      // Invalidate and refetch recipes
-      // queryClient.invalidateQueries({ queryKey: ["recipes"] });
-    } catch (error) {
-      console.error("Error updating recipe:", error);
+    const res = await fetch("/api/recipe/update", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id, ...fieldsToUpdate }),
+    });
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("API error response:", errorText);
+      throw new Error("Failed to update recipe");
     }
+    const data = await res.json();
+    console.log("Update response data:", data);
+    // queryClient.invalidateQueries({ queryKey: ["recipes"] });
   };
 
   return (
@@ -216,14 +253,16 @@ export default function EditRecipeForm({ recipeData }: EditRecipeFormProps) {
                   key={idx}
                   className="flex gap-2 items-center text-gray-800 dark:text-gray-200"
                 >
-                  <input
-                    className="flex-1 bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400 px-1"
-                    value={instruction.description}
-                    onChange={(e) =>
-                      handleInstructionChange(idx, e.target.value)
-                    }
-                    placeholder={`Step ${idx + 1}`}
-                  />
+                  <button
+                    type="button"
+                    className="flex-1 text-left bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400 px-1 hover:bg-orange-50 dark:hover:bg-orange-950 rounded"
+                    onClick={() => openInstructionModal(idx)}
+                    title="Click to edit full instruction"
+                  >
+                    {instruction.description.length > 60
+                      ? instruction.description.slice(0, 60) + "..."
+                      : instruction.description || `Step ${idx + 1}`}
+                  </button>
                   <button
                     type="button"
                     className="text-red-500 ml-2"
@@ -234,6 +273,52 @@ export default function EditRecipeForm({ recipeData }: EditRecipeFormProps) {
                 </li>
               ))}
             </ol>
+            {/* Modal for editing a single instruction */}
+            {editingInstructionIdx !== null && (
+              <div
+                className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-lg"
+                onClick={closeInstructionModal}
+              >
+                <div
+                  className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 max-w-lg w-full relative"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 dark:hover:text-white"
+                    onClick={closeInstructionModal}
+                    aria-label="Close"
+                  >
+                    &times;
+                  </button>
+                  <h3 className="text-lg font-bold mb-2 text-orange-600 dark:text-orange-300">
+                    Edit Step {editingInstructionIdx + 1}
+                  </h3>
+                  <textarea
+                    className="w-full min-h-[120px] border border-gray-300 dark:border-gray-700 rounded p-2 text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    value={editingInstructionValue}
+                    onChange={(e) => setEditingInstructionValue(e.target.value)}
+                    placeholder="Edit instruction..."
+                    autoFocus
+                  />
+                  <div className="flex justify-end gap-2 mt-4">
+                    <button
+                      type="button"
+                      className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-2 px-4 rounded"
+                      onClick={closeInstructionModal}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded"
+                      onClick={saveInstructionModal}
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             <button
               type="button"
               className="mt-2 text-orange-600 dark:text-orange-300 font-semibold"
