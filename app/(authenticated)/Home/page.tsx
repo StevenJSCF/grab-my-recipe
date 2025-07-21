@@ -1,8 +1,11 @@
+"use client";
 import React from "react";
+import { useSession } from "next-auth/react";
 import { BookOpen, Upload } from "lucide-react";
 import Link from "next/link";
 
 export default function HomePage() {
+  const { data: session } = useSession();
   return (
     <div className="min-h-screen dark:from-gray-900 dark:to-gray-800 flex flex-col items-center justify-center p-8">
       <div className="flex items-center space-x-3 mb-8">
@@ -10,15 +13,26 @@ export default function HomePage() {
           <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
         </div>
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
-          Welcome back to GrabMyRecipe!
+          {session && session.user
+            ? `Welcome to GrabMyRecipe, ${session.user.name}!`
+            : "Welcome to GrabMyRecipe!"}
         </h1>
-        `{" "}
       </div>
+      {session && session.user && (
+        <div className="flex flex-col items-center mb-8 -mt-4">
+          {session.user.image && (
+            <img
+              src={session.user.image}
+              alt={session.user.name + " profile"}
+              className="w-16 h-16 rounded-full border-4 border-orange-500 shadow-lg mb-2"
+            />
+          )}
+        </div>
+      )}
       <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-200 mb-8 text-center max-w-xl">
         Your personal recipe dashboard. Quickly access your recipes, upload new
         ones, or check your favorites. Stay organized and inspired!
       </p>
-      `
       <div className="w-full max-w-2xl grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
         <Link
           href="/Recipes"
@@ -41,18 +55,29 @@ export default function HomePage() {
       </div>
       <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-xl shadow p-6 mt-4 border border-orange-50 dark:border-gray-800">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-          Quick Tips
+          Important Info
         </h2>
         <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 text-base space-y-1">
           <li>
-            Make sure the Youtube video URL is valid when uploading recipes.
+            Currently the app does not support videos in languages other than
+            English.
           </li>
           <li>
-            Some Youtube videos may not have the ingredients mentioned in the
-            video or description. The app will try to extract them, but may
-            fail.
+            The longer the video, the more it will take to output the data.
           </li>
-          <li>Mark recipes as favorites for easy access later.</li>
+          <li>
+            Some videos may not work due to their format or content. Please check the video if it does not work.
+          </li>
+          <li>
+            Please report any bugs to
+            <a
+              href="mailto:stevenjscf@gmail.com"
+              className="underline text-orange-500 hover:text-orange-700 ml-1"
+            >
+              stevenchiang12300@gmail.com
+            </a>
+            .
+          </li>
         </ul>
       </div>
     </div>

@@ -21,46 +21,52 @@ export function SidebarNav() {
 
   if (isMobile) {
     return (
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="w-64 p-0">
-          <div className="flex flex-col h-full">
-            <div className="p-4 border-b">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                  <BookOpen className="w-5 h-5 text-white" />
+      <div className="fixed top-4 left-4 z-50 md:hidden">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="w-16 h-16 p-0 flex items-center justify-center"
+            >
+              <Menu className="h-10 w-10" />
+              <span className="sr-only">Toggle navigation menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-64 p-0">
+            <div className="flex flex-col h-full">
+              <div className="p-4 border-b">
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                    <BookOpen className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-lg font-semibold">GrabMyRecipe</span>
                 </div>
-                <span className="text-lg font-semibold">GrabMyRecipe</span>
               </div>
+              <nav className="flex-1 p-2">
+                {navigationItems.map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setActiveItem(item.label)}
+                    className={cn(
+                      "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
+                      activeItem === item.label
+                        ? "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300"
+                        : "text-gray-700 dark:text-gray-300"
+                    )}
+                    scroll={false}
+                    prefetch={true}
+                  >
+                    <item.icon className="h-5 w-5" />
+                    <span>{item.label}</span>
+                  </Link>
+                ))}
+              </nav>
             </div>
-            <nav className="flex-1 p-2">
-              {navigationItems.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setActiveItem(item.label)}
-                  className={cn(
-                    "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
-                    activeItem === item.label
-                      ? "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300"
-                      : "text-gray-700 dark:text-gray-300"
-                  )}
-                  scroll={false}
-                  prefetch={true}
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span>{item.label}</span>
-                </Link>
-              ))}
-            </nav>
-          </div>
-        </SheetContent>
-      </Sheet>
+          </SheetContent>
+        </Sheet>
+      </div>
     );
   }
 
