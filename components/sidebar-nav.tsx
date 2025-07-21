@@ -10,8 +10,8 @@ import { useMobile } from "@/hooks/use-mobile";
 
 const navigationItems = [
   { icon: Home, label: "Home", href: "/Home" },
-  { icon: Upload, label: "Upload Recipe", href: "/UploadRecipe" },
   { icon: BookOpen, label: "My Recipes", href: "/Recipes" },
+  { icon: Upload, label: "Upload Recipe", href: "/UploadRecipe" },
   { icon: Settings, label: "Settings", href: "/Settings" },
 ];
 

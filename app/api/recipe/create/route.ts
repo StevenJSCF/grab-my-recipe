@@ -1,13 +1,14 @@
 import { createRecipe } from "@/lib/db/actions/recipes.action";
 import { NextRequest, NextResponse } from "next/server";
 import { RecipeType } from "@/lib/types";
+import { auth } from "@/auth";
 
 // /api/recipes/create
 export async function POST(req: NextRequest) {
   try {
     // Optionally: Check if the user is logged in (if you use auth)
-    // const session = await getServerSession(authOptions);
-    // if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const session = await auth();
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const requestBody = await req.json();
 

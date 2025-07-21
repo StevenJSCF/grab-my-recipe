@@ -11,9 +11,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { SidebarNav } from "@/components/sidebar-nav";
+import { auth } from "@/auth";
 const inter = Inter({ subsets: ["latin"] });
 
-export default function AuthenticatedLayout({
+export default async function AuthenticatedLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -21,6 +22,8 @@ export default function AuthenticatedLayout({
   // Initialize QueryClient for React Query
   const [queryClient] = useState(() => new QueryClient());
   const { data: session } = useSession();
+
+  // const session = await auth();
   if (!session) {
     return redirect("/");
   }
