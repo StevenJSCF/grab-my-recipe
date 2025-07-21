@@ -8,7 +8,8 @@ export async function POST(req: NextRequest) {
   try {
     // Optionally: Check if the user is logged in (if you use auth)
     const session = await auth();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const requestBody = await req.json();
 
@@ -18,7 +19,7 @@ export async function POST(req: NextRequest) {
       ingredients: requestBody.ingredients,
       instructions: requestBody.instructions,
       favorite: requestBody.favorite || false,
-      userId: requestBody.userId || "507f1f77bcf86cd799439011", // Need to change this later when the user is logged
+      userId: session.user?.id || "", // Always use the authenticated user's id
       createdAt: new Date(),
       updatedAt: new Date(),
       image: requestBody.image || "",
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
       serving: requestBody.serving || "",
     };
 
-    console.log("Creating recipe with data:", recipeData);  
+    console.log("Creating recipe with data:", recipeData);
 
     if (!recipeData) {
       return NextResponse.json({ error: "Missing form data" }, { status: 400 });

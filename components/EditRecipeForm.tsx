@@ -157,6 +157,23 @@ export default function EditRecipeForm({
     // queryClient.invalidateQueries({ queryKey: ["recipes"] });
   };
 
+  const deleteRecipe = async (id: string) => {
+  const res = await fetch("/api/recipe/delete", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id }),
+  });
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error("API error response:", errorText);
+    throw new Error("Failed to delete recipe");
+  }
+  const data = await res.json();
+  console.log("Delete response data:", data);
+};
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -310,7 +327,7 @@ export default function EditRecipeForm({
                     </button>
                     <button
                       type="button"
-                    className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg shadow"
+                      className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg shadow"
                       onClick={saveInstructionModal}
                     >
                       Save
@@ -329,7 +346,26 @@ export default function EditRecipeForm({
           </div>
         </div>
       </div>
-      <div className="flex justify-end mt-8">
+      <div className="flex justify-end mt-8 gap-4">
+        <button
+          type="button"
+          className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg shadow"
+          onClick={async () => {
+            if (
+              window.confirm("Are you sure you want to delete this recipe?")
+            ) {
+              try {
+                await deleteRecipe(recipeData.id);
+                toast.success("Recipe deleted!");
+                if (onClose) onClose();
+              } catch (error) {
+                toast.error("Failed to delete recipe");
+              }
+            }
+          }}
+        >
+          Delete
+        </button>
         <button
           type="submit"
           className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg shadow"
@@ -340,3 +376,4 @@ export default function EditRecipeForm({
     </form>
   );
 }
+

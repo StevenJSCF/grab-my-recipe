@@ -14,7 +14,7 @@ import { SidebarNav } from "@/components/sidebar-nav";
 import { auth } from "@/auth";
 const inter = Inter({ subsets: ["latin"] });
 
-export default async function AuthenticatedLayout({
+export default function AuthenticatedLayout({
   children,
 }: {
   children: React.ReactNode;

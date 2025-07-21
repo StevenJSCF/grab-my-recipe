@@ -2,9 +2,10 @@ import prisma from "@/lib/prisma";
 
 // Get all recipes
 // Here I will need to get all recipes by userId
-export const getRecipes = async (filter = {}) => {
+// Get all recipes for a specific user
+export const getRecipes = async (userId: string) => {
   const recipes = await prisma.recipe.findMany({
-    where: filter,
+    where: { userId },
     include: {
       ingredients: true,
       instructions: true,
@@ -85,7 +86,8 @@ export const updateRecipe = async (
       title: data.title && data.title.trim() ? data.title : "Untitled Recipe",
       favorite: data.favorite,
       image: data.image,
-      channel: data.channel && data.channel.trim() ? data.channel : "No channel",
+      channel:
+        data.channel && data.channel.trim() ? data.channel : "No channel",
       duration: data.duration && data.duration.trim() ? data.duration : "?",
       serving: data.serving && data.serving.trim() ? data.serving : "?",
       updatedAt: data.updatedAt,
@@ -113,6 +115,12 @@ export const updateRecipe = async (
 };
 
 // Delete a recipe
+
 export const deleteRecipe = async (id: string) => {
+  // Delete related ingredients
+  await prisma.ingredient.deleteMany({ where: { recipeId: id } });
+  // Delete related instructions
+  await prisma.instruction.deleteMany({ where: { recipeId: id } });
+  // Delete the recipe itself
   return await prisma.recipe.delete({ where: { id } });
 };
