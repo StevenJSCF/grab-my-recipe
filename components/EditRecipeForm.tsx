@@ -158,21 +158,21 @@ export default function EditRecipeForm({
   };
 
   const deleteRecipe = async (id: string) => {
-  const res = await fetch("/api/recipe/delete", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ id }),
-  });
-  if (!res.ok) {
-    const errorText = await res.text();
-    console.error("API error response:", errorText);
-    throw new Error("Failed to delete recipe");
-  }
-  const data = await res.json();
-  console.log("Delete response data:", data);
-};
+    const res = await fetch("/api/recipe/delete", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    });
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("API error response:", errorText);
+      throw new Error("Failed to delete recipe");
+    }
+    const data = await res.json();
+    console.log("Delete response data:", data);
+  };
 
   return (
     <form
@@ -357,7 +357,8 @@ export default function EditRecipeForm({
               try {
                 await deleteRecipe(recipeData.id);
                 toast.success("Recipe deleted!");
-                if (onClose) onClose();
+                if (onSave) onSave();
+                else if (onClose) onClose();
               } catch (error) {
                 toast.error("Failed to delete recipe");
               }
@@ -376,4 +377,3 @@ export default function EditRecipeForm({
     </form>
   );
 }
-

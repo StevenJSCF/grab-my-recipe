@@ -6,17 +6,19 @@ export default function HomePage() {
   return (
     <div className="min-h-screen dark:from-gray-900 dark:to-gray-800 flex flex-col items-center justify-center p-8">
       <div className="flex items-center space-x-3 mb-8">
-        <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
-          <BookOpen className="w-6 h-6 text-white" />
+        <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+          <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
           Welcome back to GrabMyRecipe!
         </h1>
+        `{" "}
       </div>
-      <p className="text-lg text-gray-700 dark:text-gray-200 mb-8 text-center max-w-xl">
+      <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-200 mb-8 text-center max-w-xl">
         Your personal recipe dashboard. Quickly access your recipes, upload new
         ones, or check your favorites. Stay organized and inspired!
       </p>
+      `
       <div className="w-full max-w-2xl grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
         <Link
           href="/Recipes"
@@ -46,11 +48,11 @@ export default function HomePage() {
             Make sure the Youtube video URL is valid when uploading recipes.
           </li>
           <li>
-            Some Youtube videos may not have the ingredients mentioned in the video or description. The app will try to extract them, but may fail.
+            Some Youtube videos may not have the ingredients mentioned in the
+            video or description. The app will try to extract them, but may
+            fail.
           </li>
-          <li>
-            Mark recipes as favorites for easy access later.
-          </li>
+          <li>Mark recipes as favorites for easy access later.</li>
         </ul>
       </div>
     </div>
