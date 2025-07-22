@@ -1,9 +1,8 @@
 "use client";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import SignInModal from "@/components/SignInModal";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 
 export default function AuthButton() {

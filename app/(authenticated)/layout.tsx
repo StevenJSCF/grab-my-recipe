@@ -2,7 +2,6 @@
 
 import type React from "react";
 import { useState } from "react";
-import { Inter } from "next/font/google";
 import "../globals.css";
 import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "next-auth/react";
@@ -11,8 +10,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { SidebarNav } from "@/components/sidebar-nav";
-import { auth } from "@/auth";
-const inter = Inter({ subsets: ["latin"] });
 
 export default function AuthenticatedLayout({
   children,

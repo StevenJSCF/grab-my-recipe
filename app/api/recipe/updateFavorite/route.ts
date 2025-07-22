@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { updateFavorite } from "@/lib/db/actions/recipes.action";
-import { auth } from "@/auth";
 
 export async function PUT(req: NextRequest) {
   console.log("here inside UPDATE");

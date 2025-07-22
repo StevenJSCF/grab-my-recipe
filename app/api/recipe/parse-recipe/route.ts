@@ -1,4 +1,3 @@
-import { Omega } from "lucide-react";
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { auth } from "@/auth";

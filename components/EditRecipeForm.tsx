@@ -68,11 +68,6 @@ export default function EditRecipeForm({
       prev.map((ing, i) => (i === idx ? { ...ing, [field]: value } : ing))
     );
   };
-  const handleInstructionChange = (idx: number, value: string) => {
-    setInstructions((prev) =>
-      prev.map((ins, i) => (i === idx ? { ...ins, description: value } : ins))
-    );
-  };
 
   // Add/remove ingredient/instruction
   const addIngredient = () =>
@@ -136,6 +131,7 @@ export default function EditRecipeForm({
       else if (onClose) onClose();
     } catch (error) {
       toast.error("Failed to update recipe");
+      console.error("Update recipe error:", error);
     }
   };
 
@@ -360,7 +356,8 @@ export default function EditRecipeForm({
                 if (onSave) onSave();
                 else if (onClose) onClose();
               } catch (error) {
-                toast.error("Failed to delete recipe");
+                toast.error("Failed to delete recipe",);
+                console.error("Delete recipe error:", error);
               }
             }
           }}
