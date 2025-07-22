@@ -32,12 +32,14 @@ export default function UploadRecipePage() {
       try {
         // Fetch video transcript
         const transcriptRes = await fetch(
-          `http://127.0.0.1:5000/transcript?videoId=${videoId}`
+          `/api/youtube/yt-transcript?videoId=${videoId}`
         );
         const transcriptData = await transcriptRes.json();
-        const transcript = transcriptData.transcript;
+        console.log("Transcript Data:", transcriptData);
+        console.log("Transcript Data CONTENT:", transcriptData.content);
+        const transcript = transcriptData.content;
         if (!transcript) {
-          throw new Error("Transcript not found in the response");
+            toast.error("Transcript not found for this video.");
         }
         // Fetch YouTube metadata from your own API route (server-side)
         const youtubeRes = await fetch("/api/youtube/google-ytv3", {

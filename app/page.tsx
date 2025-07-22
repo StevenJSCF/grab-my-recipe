@@ -1,5 +1,4 @@
-import { SidebarNav } from "@/components/sidebar-nav";
-import HomePage from "./(authenticated)/Home/page";
+import LandingPage from "./LandingPage";
 
 export default function Page() {
   // const { data: session, status } = useSession();
@@ -11,8 +10,7 @@ export default function Page() {
 
   return (
     <main>
-      <SidebarNav />
-      <HomePage />
+      <LandingPage />
     </main>
   );
 }

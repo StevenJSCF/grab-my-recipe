@@ -2,11 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { updateFavorite } from "@/lib/db/actions/recipes.action";
 
 export async function PUT(req: NextRequest) {
-  //   const userId = req.nextUrl.searchParams.get("userId");
-  //   if (!userId) {
-  //     return NextResponse.json({ error: "Missing userId" }, { status: 400 });
-  //   }
-
   console.log("here inside UPDATE");
 
   const body = await req.json();

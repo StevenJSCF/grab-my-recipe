@@ -26,10 +26,7 @@ export default function RecipesPage() {
 
   // Use React Query for fetching recipes
   const queryClient = useQueryClient();
-  const {
-    data: recipes,
-    isLoading,
-  } = useQuery({
+  const { data: recipes, isLoading } = useQuery({
     queryKey: ["recipes"],
     queryFn: async () => {
       const res = await fetch("/api/recipe/getRecipes");
@@ -67,6 +64,18 @@ export default function RecipesPage() {
   const handleEditClick = (recipe: RecipeType) => {
     setSelectedRecipe(recipe);
     setShowEditModal(true);
+  };
+
+  // Close modal and reset selected recipe
+  const closeModal = () => {
+    setShowEditModal(false);
+    setSelectedRecipe(null);
+  };
+
+  // Invalidate recipes and close modal after edit
+  const handleRecipeSave = () => {
+    queryClient.invalidateQueries({ queryKey: ["recipes"] });
+    closeModal();
   };
 
   return (
@@ -365,7 +374,11 @@ export default function RecipesPage() {
               >
                 &times;
               </button>
-              <EditRecipeForm recipeData={selectedRecipe} />
+              <EditRecipeForm
+                recipeData={selectedRecipe}
+                onClose={closeModal}
+                onSave={handleRecipeSave}
+              />
             </div>
           </div>
         )}

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
-
+import { auth } from "@/auth";
 // the transcript json will be obtained from the youtube-transcript api
 // /api/recipe/parse-recipe?query=transcript-json
 
@@ -32,6 +32,10 @@ export async function POST(request: NextRequest) {
 }
 
 async function parseTranscript(transcript: string) {
+
+      const session = await auth();
+      if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });

@@ -1,5 +1,4 @@
-// app/metadata.ts
-import type { Metadata } from "next";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "GrabMyRecipe - Turn Screenshots into Perfect Recipes",

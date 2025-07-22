@@ -1,10 +1,30 @@
-import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+const protectedRoutes = [
+  "/UploadRecipe",
+  "/Recipes",
+  "/Favorites",
+  "/Settings",
+  "/Home",
+  // add more as needed
+];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
+  const { pathname } = request.nextUrl;
+
+  // Check if the route is protected
+  if (protectedRoutes.some((route) => pathname.startsWith(route))) {
+    const token = request.cookies.get("session")?.value ?? null;
+    if (!token) {
+      // Redirect to landing page if not authenticated
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
   if (request.method === "GET") {
-    const response = NextResponse.next()
-    const token = request.cookies.get("session")?.value ?? null
+    const response = NextResponse.next();
+    const token = request.cookies.get("session")?.value ?? null;
     if (token !== null) {
       // Only extend cookie expiration on GET requests since we can be sure
       // a new session wasn't set when handling the request.
@@ -14,32 +34,32 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
         sameSite: "lax",
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-      })
+      });
     }
-    return response
+    return response;
   }
 
   // CSRF protection
-  const originHeader = request.headers.get("Origin")
+  const originHeader = request.headers.get("Origin");
   // NOTE: You may need to use `X-Forwarded-Host` instead
-  const hostHeader = request.headers.get("Host")
+  const hostHeader = request.headers.get("Host");
   if (originHeader === null || hostHeader === null) {
     return new NextResponse(null, {
       status: 403,
-    })
+    });
   }
-  let origin: URL
+  let origin: URL;
   try {
-    origin = new URL(originHeader)
+    origin = new URL(originHeader);
   } catch {
     return new NextResponse(null, {
       status: 403,
-    })
+    });
   }
   if (origin.host !== hostHeader) {
     return new NextResponse(null, {
       status: 403,
-    })
+    });
   }
-  return NextResponse.next()
+  return NextResponse.next();
 }

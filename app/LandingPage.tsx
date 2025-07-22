@@ -1,18 +1,25 @@
+"use client";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Save,
-  BookOpen,
-  ArrowRight,
-  Upload,
-  Zap,
-} from "lucide-react";
+import { Save, BookOpen, ArrowRight, Upload, Zap } from "lucide-react";
 import AuthButton from "../components/AuthButton";
+import { useState, useEffect } from "react";
+import SignInModal from "../components/SignInModal";
 
 export default function LandingPage() {
+  const [showSignIn, setShowSignIn] = useState(false);
+  const [showDemoToast, setShowDemoToast] = useState(false);
+
+  // Auto-hide toast after 2.5 seconds
+  useEffect(() => {
+    if (showDemoToast) {
+      const timer = setTimeout(() => setShowDemoToast(false), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [showDemoToast]);
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
       <header className="container mx-auto px-4 py-6 flex justify-between items-center">
         <div className="flex items-center space-x-2">
@@ -36,20 +43,37 @@ export default function LandingPage() {
             <span className="text-orange-500 block">Perfect Recipes</span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Upload a cooking YouTube video URL. This app will extract and format everything
-            perfectly, so you can save and organize your favorite recipes
-            effortlessly.
+            Upload a cooking YouTube video URL. This app will extract and format
+            everything perfectly, so you can save and organize your favorite
+            recipes effortlessly.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
               className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3"
+              onClick={() => setShowSignIn(true)}
             >
               Try it now <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
-            <Button size="lg" variant="outline" className="px-8 py-3">
+            <SignInModal
+              open={showSignIn}
+              onClose={() => setShowSignIn(false)}
+            />
+
+            <Button
+              size="lg"
+              variant="outline"
+              className="px-8 py-3"
+              onClick={() => setShowDemoToast(true)}
+            >
               Watch Demo
             </Button>
+            {/* Toast notification for demo video */}
+            {showDemoToast && (
+              <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-gray-900 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2 animate-fade-in">
+                <span>Demo video coming soon!</span>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -60,8 +84,8 @@ export default function LandingPage() {
             How It Works
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Transform any YouTube video recipe into a perfectly formatted, saveable
-            recipe in just three simple steps.
+            Transform any YouTube video recipe into a perfectly formatted,
+            saveable recipe in just three simple steps.
           </p>
         </div>
 
@@ -71,9 +95,7 @@ export default function LandingPage() {
               <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Upload className="w-8 h-8 text-orange-500" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">
-                1. Paste URL
-              </h3>
+              <h3 className="text-xl font-semibold mb-3">1. Paste URL</h3>
               <p className="text-gray-600 dark:text-gray-300">
                 Simply paste the URL of a cooking YouTube video.
               </p>
@@ -89,8 +111,8 @@ export default function LandingPage() {
                 2. Extract & Format
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Our technology automatically extracts and formats
-                the ingredients list and instructions perfectly.
+                Our technology automatically extracts and formats the
+                ingredients list and instructions perfectly.
               </p>
             </CardContent>
           </Card>
@@ -138,6 +160,7 @@ export default function LandingPage() {
           </div>
         </div>
       </footer> */}
+      {/* Sign In Modal */}
     </div>
   );
 }
