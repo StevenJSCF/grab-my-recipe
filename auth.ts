@@ -19,9 +19,12 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       checks: [],
     }),
   ],
+  pages: {
+    signIn: "/", // or wherever your login page is
+    newUser: "/Home", // <- redirect new users here after login
+  },
   callbacks: {
     authorized: async ({ auth }) => {
-      // Logged in users are authenticated, otherwise redirect to login page
       return !!auth;
     },
   },

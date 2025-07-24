@@ -6,8 +6,22 @@ import { Save, BookOpen, ArrowRight, Upload, Zap } from "lucide-react";
 import AuthButton from "../components/AuthButton";
 import { useState, useEffect } from "react";
 import SignInModal from "../components/SignInModal";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function LandingPage() {
+
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/authenticated/Home"); 
+    }
+  }, [status, router]);
+
+
   const [showSignIn, setShowSignIn] = useState(false);
   const [showDemoToast, setShowDemoToast] = useState(false);
 

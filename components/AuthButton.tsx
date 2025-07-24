@@ -12,6 +12,7 @@ export default function AuthButton() {
 
   useEffect(() => {
     if (session) {
+      console.log("User is authenticated:", session);
       router.push("/Home"); // ✅ Safe and conditional
     }
   }, [session, router]);
