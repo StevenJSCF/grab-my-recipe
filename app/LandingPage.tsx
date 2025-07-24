@@ -12,12 +12,12 @@ import { useRouter } from "next/navigation";
 export default function LandingPage() {
 
 
-  const { data: session, status } = useSession();
+  const {status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.replace("/authenticated/Home"); 
+      router.replace("/Home"); 
     }
   }, [status, router]);
 
