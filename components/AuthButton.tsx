@@ -1,14 +1,12 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import SignInModal from "@/components/SignInModal";
 
 export default function AuthButton() {
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
-  const router = useRouter();
 
   // useEffect(() => {
   //   if (session) {

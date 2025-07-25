@@ -16,7 +16,7 @@ export default function AuthenticatedLayout({
   children: React.ReactNode;
 }) {
   const [queryClient] = useState(() => new QueryClient());
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
