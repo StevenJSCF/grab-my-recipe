@@ -8,10 +8,28 @@ export async function POST(req: NextRequest) {
   try {
     // Optionally: Check if the user is logged in (if you use auth)
     const session = await auth();
+    console.log("Session data:", JSON.stringify(session, null, 2));
+
     if (!session)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const requestBody = await req.json();
+
+    // Ensure we have a valid user ID
+    const userId = session.user?.id || session.user?.email;
+    console.log("Available user data:", {
+      id: session.user?.id,
+      email: session.user?.email,
+      name: session.user?.name,
+    });
+
+    if (!userId) {
+      console.error("No user ID or email found in session:", session);
+      return NextResponse.json(
+        { error: "User ID not found in session" },
+        { status: 400 }
+      );
+    }
 
     //Ignore the id field mongo will generate it
     const recipeData: Omit<RecipeType, "id"> = {
@@ -19,7 +37,7 @@ export async function POST(req: NextRequest) {
       ingredients: requestBody.ingredients,
       instructions: requestBody.instructions,
       favorite: requestBody.favorite || false,
-      userId: session.user?.id || "", // Always use the authenticated user's id
+      userId: userId, // Use the validated user ID
       createdAt: new Date(),
       updatedAt: new Date(),
       image: requestBody.image || "",
@@ -29,6 +47,7 @@ export async function POST(req: NextRequest) {
     };
 
     console.log("Creating recipe with data:", recipeData);
+    console.log("User ID being used:", recipeData.userId);
 
     if (!recipeData) {
       return NextResponse.json({ error: "Missing form data" }, { status: 400 });

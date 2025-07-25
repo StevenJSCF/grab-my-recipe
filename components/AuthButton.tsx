@@ -1,19 +1,21 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import SignInModal from "@/components/SignInModal";
+import { useRouter } from "next/navigation";
 
 export default function AuthButton() {
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (session) {
-  //     console.log("User is authenticated:", session);
-  //     router.push("/Home"); // ✅ Safe and conditional
-  //   }
-  // }, [session, router]);
+  useEffect(() => {
+    if (session) {
+      console.log("User is authenticated:", session);
+      router.replace("/Home"); // Redirect to Home when authenticated
+    }
+  }, [session, router]);
 
   if (status === "loading") return null;
 

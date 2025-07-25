@@ -1,31 +1,30 @@
 import NextAuth from "next-auth";
-import GitHub from "next-auth/providers/github";
-import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { authConfig } from "./auth.config";
 import prisma from "@/lib/prisma";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
-  secret: process.env.NEXTAUTH_SECRET,
+  ...authConfig,
   adapter: PrismaAdapter(prisma),
-  providers: [
-    GitHub({
-      clientId: process.env.AUTH_GITHUB_ID!,
-      clientSecret: process.env.AUTH_GITHUB_SECRET!,
-      checks: [],
-    }),
-    Google({
-      clientId: process.env.AUTH_GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.AUTH_GOOGLE_CLIENT_SECRET!,
-      checks: [],
-    }),
-  ],
-  pages: {
-    signIn: "/", // or wherever your login page is
-    newUser: "/Home", // <- redirect new users here after login
-  },
+  session: { strategy: "jwt" },
   callbacks: {
-    authorized: async ({ auth }) => {
-      return !!auth;
+    ...authConfig.callbacks,
+    async jwt({ token, user, account }) {
+      // When user first signs in, add their database ID to the token
+      if (user) {
+        token.sub = user.id; // sub is the standard JWT claim for user ID
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Add the user ID from the token to the session
+      if (token.sub) {
+        session.user.id = token.sub;
+      } else if (token.id) {
+        session.user.id = token.id as string;
+      }
+      return session;
     },
   },
 });
