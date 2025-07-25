@@ -8,7 +8,7 @@ import { SessionProvider, useSession } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SidebarNav } from "@/components/sidebar-nav";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 export default function AuthenticatedLayout({
   children,
