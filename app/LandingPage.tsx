@@ -6,12 +6,9 @@ import { Save, BookOpen, ArrowRight, Upload, Zap } from "lucide-react";
 import AuthButton from "../components/AuthButton";
 import { useState, useEffect } from "react";
 import SignInModal from "../components/SignInModal";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 export default function LandingPage() {
-  const { status } = useSession();
-  const router = useRouter();
+
 
   // AuthButton now handles redirection after authentication
   // useEffect(() => {
