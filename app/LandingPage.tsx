@@ -7,21 +7,18 @@ import AuthButton from "../components/AuthButton";
 import { useState, useEffect } from "react";
 import SignInModal from "../components/SignInModal";
 import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function LandingPage() {
-
-
-  const {status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     if (status === "authenticated") {
       console.log("User is authenticated, redirecting to Home");
-      return (redirect("/Home")); // Redirect to Home if authenticated
+      router.push("/Home"); // Redirect to Home if authenticated
     }
   }, [status, router]);
-
 
   const [showSignIn, setShowSignIn] = useState(false);
   const [showDemoToast, setShowDemoToast] = useState(false);
