@@ -21,6 +21,7 @@ export default function AuthenticatedLayout({
 
   useEffect(() => {
     if (status === "unauthenticated") {
+      console.log("User is unauthenticated, redirecting to LandingPage");
       router.replace("/");
     }
   }, [status, router]);
