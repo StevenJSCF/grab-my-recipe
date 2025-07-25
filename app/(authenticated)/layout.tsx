@@ -29,7 +29,7 @@ export default function AuthenticatedLayout({
   if (status === "loading") return null;
 
   return (
-    <SessionProvider>
+    <SessionProvider refetchInterval={0}>
       <ThemeProvider
         attribute="class"
         defaultTheme="system"

@@ -13,6 +13,9 @@ export default function AuthButton() {
   useEffect(() => {
     if (session) {
       console.log("User is authenticated:", session);
+      console.log("session", session);
+console.log("status", status);
+
       router.replace("/Home"); // Redirect to Home when authenticated
     }
   }, [session, router]);
