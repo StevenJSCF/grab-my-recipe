@@ -16,7 +16,10 @@ export default function LandingPage() {
   useEffect(() => {
     if (status === "authenticated") {
       console.log("User is authenticated, redirecting to Home");
-      router.push("/Home"); // Redirect to Home if authenticated
+      // Add a small delay to ensure session state is stable
+      setTimeout(() => {
+        router.replace("/Home");
+      }, 100);
     }
   }, [status, router]);
 
