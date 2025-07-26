@@ -1,12 +1,14 @@
 import LandingPage from "./LandingPage";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
-export default function Page() {
-  // const { data: session, status } = useSession();
+export default async function Page() {
+  const session = await auth();
 
-  // if (status === "authenticated" && session.user) {
-  //   console.log("user is authenticated", session.user);
-  //   return <p>Signed in as {session.user.email}</p>;
-  // }
+  // If user is authenticated, redirect to Home
+  if (session?.user) {
+    redirect("/Home");
+  }
 
   return (
     <main>

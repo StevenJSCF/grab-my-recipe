@@ -1,0 +1,13 @@
+{
+  "env": {
+    "AUTH_SECRET": "@auth-secret",
+    "AUTH_GITHUB_ID": "@auth-github-id", 
+    "AUTH_GITHUB_SECRET": "@auth-github-secret",
+    "AUTH_GOOGLE_CLIENT_ID": "@auth-google-client-id",
+    "AUTH_GOOGLE_CLIENT_SECRET": "@auth-google-client-secret",
+    "YOUTUBE_DATA_GOOGLE_API_KEY": "@youtube-data-google-api-key",
+    "OPENAI_API_KEY": "@openai-api-key",
+    "MONGODB_URI": "@mongodb-uri",
+    "SUPADATA_API_KEY": "@supadata-api-key"
+  }
+}

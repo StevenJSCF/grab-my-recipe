@@ -12,7 +12,10 @@ export default function SignInModal({
   const handleSignIn = async (provider: string, event: React.MouseEvent) => {
     event.preventDefault();
     try {
-      await signIn(provider);
+      await signIn(provider, { 
+        callbackUrl: "/Home",
+        redirect: true 
+      });
       onClose(); // Close the modal after sign in attempt
     } catch (error) {
       console.error("Sign in error:", error);

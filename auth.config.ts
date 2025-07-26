@@ -20,10 +20,17 @@ export const authConfig = {
       if (isOnProtectedRoute) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
-      } else if (isLoggedIn) {
-        return Response.redirect(new URL("/Home", nextUrl));
       }
+
       return true;
+    },
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+      // Default redirect to Home after sign in
+      return `${baseUrl}/Home`;
     },
   },
   providers: [
