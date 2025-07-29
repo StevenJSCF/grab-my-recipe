@@ -4,9 +4,9 @@ import { randomBytes } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { email, password } = await req.json();
+  const { username, password } = await req.json();
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findUnique({ where: { username } });
   if (!user || !user.password) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }

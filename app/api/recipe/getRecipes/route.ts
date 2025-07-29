@@ -1,13 +1,13 @@
+
 import { NextResponse } from "next/server";
 import { getRecipes } from "@/lib/db/actions/recipes.action";
-import { auth } from "@/auth";
+import { getUserFromSession } from "@/lib/getUserFromSession";
 
 export async function GET() {
-  const session = await auth();
-  if (!session || !session.user || !session.user.id) {
+  const user = await getUserFromSession();
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
-  const recipes = await getRecipes(session.user.id);
+  const recipes = await getRecipes(user.id);
   return NextResponse.json({ recipes }, { status: 200 });
 }

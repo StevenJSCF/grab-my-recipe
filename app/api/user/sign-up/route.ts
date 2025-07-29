@@ -4,19 +4,19 @@ import { randomBytes } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { email, password, name } = await req.json();
+  const { username, password, name } = await req.json();
 
-  // Check if email exists
-  const existingUser = await prisma.user.findUnique({ where: { email } });
+  // Check if username exists
+  const existingUser = await prisma.user.findUnique({ where: { username } });
   if (existingUser) {
-    return NextResponse.json({ error: "Email already registered" }, { status: 400 });
+    return NextResponse.json({ error: "username already registered" }, { status: 400 });
   }
 
   // Create user
   const hashedPassword = await bcrypt.hash(password, 12);
   const user = await prisma.user.create({
     data: {
-      email,
+      username,
       password: hashedPassword,
       name,
     },

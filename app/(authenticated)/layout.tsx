@@ -20,10 +20,10 @@ export default function AuthenticatedLayout({
   const [queryClient] = useState(() => new QueryClient());
   const { data: session } = useSession();
 
-  // const session = await auth();
-  if (!session) {
-    return redirect("/");
-  }
+  // const session = await auth();  
+  // if (!session) {
+  //   return redirect("/");
+  // }
   return (
     <SessionProvider>
       <ThemeProvider

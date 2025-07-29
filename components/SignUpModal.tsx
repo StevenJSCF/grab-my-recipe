@@ -9,7 +9,7 @@ export default function SignUpModal({
   open: boolean;
   onClose: () => void;
 }) {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -24,7 +24,7 @@ export default function SignUpModal({
     setError(null);
     setSuccess(false);
 
-    if (!email || !password || !confirm || !name) {
+    if (!username || !password || !confirm || !name) {
       setError("All fields are required.");
       return;
     }
@@ -37,11 +37,11 @@ export default function SignUpModal({
       const res = await fetch("/api/user/sign-up", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, name }),
+        body: JSON.stringify({ username, password, name }),
       });
       if (res.ok) {
         setSuccess(true);
-        setEmail("");
+        setUsername("");
         setPassword("");
         setConfirm("");
         setName("");
@@ -69,11 +69,11 @@ export default function SignUpModal({
             required
           />
           <input
-            type="email"
-            placeholder="Email"
+            type="text"
+            placeholder="Username"
             className="border rounded px-3 py-2"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
           <input

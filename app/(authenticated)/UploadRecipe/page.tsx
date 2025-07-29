@@ -85,6 +85,7 @@ export default function UploadRecipePage() {
           body: JSON.stringify(combined),
         });
         const data = await response.json();
+        console.log("Parsed Recipe Data:", data.output_text);
         const parsedRecipe = JSON.parse(data.output_text);
         const fullRecipe = {
           ...parsedRecipe,

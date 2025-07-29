@@ -1,15 +1,15 @@
 import { createRecipe } from "@/lib/db/actions/recipes.action";
 import { NextRequest, NextResponse } from "next/server";
 import { RecipeType } from "@/lib/types";
-import { auth } from "@/auth";
+import { getUserFromSession } from "@/lib/getUserFromSession";
 
 // /api/recipes/create
 export async function POST(req: NextRequest) {
   try {
-    // Optionally: Check if the user is logged in (if you use auth)
-    const session = await auth();
-    if (!session)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+   const user = await getUserFromSession();
+     if (!user) {
+       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     }
 
     const requestBody = await req.json();
 
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       ingredients: requestBody.ingredients,
       instructions: requestBody.instructions,
       favorite: requestBody.favorite || false,
-      userId: session.user?.id || "", // Always use the authenticated user's id
+      userId: user.id, // Use the authenticated user's id
       createdAt: new Date(),
       updatedAt: new Date(),
       image: requestBody.image || "",

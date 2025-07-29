@@ -1,17 +1,29 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { getUserById } from "@/lib/db/actions/user.action";
-import { auth } from "@/auth";
 
 export async function GET(request: Request) {
-  const session = await auth();
-  if (!session)
+  // Get session cookie
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get("session")?.value;
+  if (!sessionCookie) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  const { searchParams } = new URL(request.url);
-  const userId = searchParams.get("userId");
-  if (!userId) {
-    return NextResponse.json({ error: "Missing userId" }, { status: 400 });
   }
-  const user = await getUserById(userId);
-  return NextResponse.json({ user }, { status: 200 });
+  const [sessionId] = sessionCookie.split("|");
+  if (!sessionId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Find session in DB
+  const prisma = (await import("@/lib/prisma")).default;
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+    include: { user: true },
+  });
+  if (!session || !session.user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Only return safe user fields
+  const { id, name } = session.user;
+  return NextResponse.json({ user: { id, name } }, { status: 200 });
 }

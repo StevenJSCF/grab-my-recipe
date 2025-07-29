@@ -15,72 +15,70 @@ datasource db {
 }
 
 model User {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId //Mongo default id is _id
-  email    String   @unique
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId //Mongo default id is _id
+  username String    @unique
   password String
-  image     String?
-  emailVerified DateTime? 
-  name      String
-  recipes   Recipe[] // One-to-many relation with Recipes, this does not create a foreign key in MongoDB (Prisma way to handle relations)
-  accounts       Account[]
-  sessions       Session[]
+  image    String?
+  name     String
+  recipes  Recipe[] // One-to-many relation with Recipes, this does not create a foreign key in MongoDB (Prisma way to handle relations)
+  accounts Account[]
+  sessions Session[]
 }
 
 model Account {
-  id                 String   @id @default(auto()) @map("_id") @db.ObjectId //Mongo default id is _id
-  userId             String   @db.ObjectId
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId //Mongo default id is _id
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
 model Session {
-  id         String   @id @map("_id")     // ✅ Plain string UUID stored in _id
+  id         String   @id @map("_id") // ✅ Plain string UUID stored in _id
   userId     String   @db.ObjectId
   secretHash String
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id])
 }
 
-
 model Ingredient {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  quantity  String
-  recipe    Recipe? @relation(fields: [recipeId], references: [id])
-  recipeId  String?  @db.ObjectId
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  quantity String
+  recipe   Recipe? @relation(fields: [recipeId], references: [id])
+  recipeId String? @db.ObjectId
 }
 
 model Instruction {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  step String
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  step        String
   description String
-  recipe    Recipe? @relation(fields: [recipeId], references: [id])
-  recipeId  String?  @db.ObjectId
+  recipe      Recipe? @relation(fields: [recipeId], references: [id])
+  recipeId    String? @db.ObjectId
 }
 
 model Recipe {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId //Mongo default id is _id
-  title     String
-  ingredients Ingredient[] 
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId //Mongo default id is _id
+  title        String
+  ingredients  Ingredient[]
   instructions Instruction[]
-  channel   String
-  image     String
-  duration  String
-  serving   String
-  favorite  Boolean @default(false)
-  user      User?    @relation(fields: [userId], references: [id]) //virtial prisma relation
-  userId    String @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  channel      String
+  image        String
+  duration     String
+  serving      String
+  favorite     Boolean       @default(false)
+  user         User?         @relation(fields: [userId], references: [id]) //virtial prisma relation
+  userId       String        @db.ObjectId
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
