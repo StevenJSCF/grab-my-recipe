@@ -39,7 +39,7 @@ export default function SignInModal({
         setError(data.error || "Sign in failed.");
       }
     } catch (err) {
-      setError("Something went wrong.");
+      setError(err instanceof Error ? err.message : String(err));
     }
     setLoading(false);
   };

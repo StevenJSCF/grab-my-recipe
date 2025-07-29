@@ -54,7 +54,7 @@ export default function SignUpModal({
         setError(data.error || "Sign up failed.");
       }
     } catch (err) {
-      setError("Something went wrong.");
+      setError(err instanceof Error ? err.message : String(err));
     }
     setLoading(false);
   };

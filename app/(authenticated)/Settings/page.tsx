@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getUserFromSession } from "@/lib/getUserFromSession";
 
 export default function SettingsPage() {
   const [user, setUser] = useState<{ name: string } | null>(null);

@@ -5,7 +5,6 @@ import Link from "next/link";
 
 export default function HomePage() {
   const [user, setUser] = useState<{ name: string } | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchUser() {
@@ -20,7 +19,6 @@ export default function HomePage() {
       } catch {
         setUser(null);
       }
-      setLoading(false);
     }
     fetchUser();
   }, []);

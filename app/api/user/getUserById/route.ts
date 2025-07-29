@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request) {
+export async function GET() {
   // Get session cookie
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get("session")?.value;

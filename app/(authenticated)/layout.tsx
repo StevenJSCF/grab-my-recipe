@@ -7,8 +7,6 @@ import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 import { SidebarNav } from "@/components/sidebar-nav";
 
 export default function AuthenticatedLayout({
@@ -18,12 +16,6 @@ export default function AuthenticatedLayout({
 }) {
   // Initialize QueryClient for React Query
   const [queryClient] = useState(() => new QueryClient());
-  const { data: session } = useSession();
-
-  // const session = await auth();  
-  // if (!session) {
-  //   return redirect("/");
-  // }
   return (
     <SessionProvider>
       <ThemeProvider
