@@ -3,12 +3,14 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Save, BookOpen, ArrowRight, Upload, Zap } from "lucide-react";
-import AuthButton from "../components/AuthButton";
+import SignInButton from "../components/SignInButton";
 import { useState, useEffect } from "react";
 import SignInModal from "../components/SignInModal";
+import SignUpModal from "../components/SignUpModal";
 
 export default function LandingPage() {
   const [showSignIn, setShowSignIn] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
   const [showDemoToast, setShowDemoToast] = useState(false);
 
   // Auto-hide toast after 2.5 seconds
@@ -31,7 +33,10 @@ export default function LandingPage() {
           </span>
         </div>
         <div className="flex items-center space-x-4">
-          <AuthButton />
+          <SignInButton />
+          <Button size="sm" variant="outline" onClick={() => setShowSignUp(true)}>
+            Sign Up
+          </Button>
           <ThemeToggle />
         </div>
       </header>
@@ -55,9 +60,14 @@ export default function LandingPage() {
             >
               Try it now <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
+
             <SignInModal
               open={showSignIn}
               onClose={() => setShowSignIn(false)}
+            />
+            <SignUpModal
+              open={showSignUp}
+              onClose={() => setShowSignUp(false)}
             />
 
             <Button

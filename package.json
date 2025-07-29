@@ -21,6 +21,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@tanstack/react-query": "^5.83.0",
     "badge": "^1.0.3",
+    "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "input": "^1.0.1",
@@ -39,6 +40,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -16,7 +16,8 @@ datasource db {
 
 model User {
   id        String      @id @default(auto()) @map("_id") @db.ObjectId //Mongo default id is _id
-  email     String   @unique
+  email    String   @unique
+  password String
   image     String?
   emailVerified DateTime? 
   name      String
@@ -44,12 +45,13 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  sessionToken String   @unique
-  userId       String   @db.ObjectId
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String   @id @map("_id")     // ✅ Plain string UUID stored in _id
+  userId     String   @db.ObjectId
+  secretHash String
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
 }
+
 
 model Ingredient {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
