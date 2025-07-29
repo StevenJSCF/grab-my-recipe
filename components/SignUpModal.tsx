@@ -32,6 +32,10 @@ export default function SignUpModal({
       setError("Passwords do not match.");
       return;
     }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch("/api/user/sign-up", {

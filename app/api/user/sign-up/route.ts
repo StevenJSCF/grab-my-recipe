@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   // Check if username exists
   const existingUser = await prisma.user.findUnique({ where: { username } });
   if (existingUser) {
-    return NextResponse.json({ error: "username already registered" }, { status: 400 });
+    return NextResponse.json({ error: "username already exists" }, { status: 400 });
   }
 
   // Create user
