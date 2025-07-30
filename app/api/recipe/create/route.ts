@@ -6,10 +6,14 @@ import { getUserFromSession } from "@/lib/getUserFromSession";
 // /api/recipes/create
 export async function POST(req: NextRequest) {
   try {
-   const user = await getUserFromSession();
-     if (!user) {
+   const sessionData = await getUserFromSession();
+     if (!sessionData) {
        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
      }
+
+    const { user, sessionId } = sessionData;
+    void sessionId; // Use sessionId to satisfy build (not needed here)
+
 
     const requestBody = await req.json();
 

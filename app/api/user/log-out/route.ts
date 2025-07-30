@@ -1,13 +1,18 @@
 import prisma from "@/lib/prisma";
+import { getUserFromSession } from "@/lib/getUserFromSession";
 
-export async function POST(req: Request) {
-  const cookie = req.headers.get("cookie") || "";
-  const match = cookie.match(/session=([^;]+)/);
-  if (!match) return new Response("No session", { status: 400 });
+export async function DELETE() {
+  const sessionData = await getUserFromSession();
+  if (!sessionData) return new Response("Unauthorized", { status: 401 });
 
-  const [sessionId] = match[1].split("|");
+  const { user, sessionId } = sessionData;
+  console.log("Logging out user:", user);
 
-  await prisma.session.delete({ where: { id: sessionId } });
+  try {
+    await prisma.session.delete({ where: { id: sessionId } });
+  } catch (err) {
+    // Session may already be deleted, ignore error
+  }
 
   const response = new Response("Logged out", { status: 200 });
   response.headers.set("Set-Cookie", `session=; Path=/; Max-Age=0`);

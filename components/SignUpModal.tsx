@@ -1,6 +1,10 @@
 "use client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function SignUpModal({
   open,
@@ -16,6 +20,15 @@ export default function SignUpModal({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (success) {
+      // Redirect to /Home after successful sign up
+      toast.success("Sign up successful!");
+      router.push("/Home");
+    }
+  }, [success, router]);
 
   if (!open) return null;
 

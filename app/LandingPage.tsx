@@ -7,11 +7,26 @@ import SignInButton from "../components/SignInButton";
 import { useState, useEffect } from "react";
 import SignInModal from "../components/SignInModal";
 import SignUpModal from "../components/SignUpModal";
+import { useRouter } from "next/navigation";
 
 export default function LandingPage() {
   const [showSignIn, setShowSignIn] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
   const [showDemoToast, setShowDemoToast] = useState(false);
+  const router = useRouter();
+
+  // Redirect to /Home if already authenticated
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        const res = await fetch("/api/user/getUserById");
+        if (res.ok) {
+          router.push("/Home");
+        }
+      } catch {}
+    }
+    checkAuth();
+  }, [router]);
 
   // Auto-hide toast after 2.5 seconds
   useEffect(() => {
@@ -34,7 +49,11 @@ export default function LandingPage() {
         </div>
         <div className="flex items-center space-x-4">
           <SignInButton />
-          <Button size="sm" variant="outline" onClick={() => setShowSignUp(true)}>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setShowSignUp(true)}
+          >
             Sign Up
           </Button>
           <ThemeToggle />
