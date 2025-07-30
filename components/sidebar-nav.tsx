@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -17,7 +17,7 @@ const navigationItems = [
 
 export function SidebarNav() {
   const isMobile = useMobile();
-  const [activeItem, setActiveItem] = useState("Home");
+  const pathname = usePathname();
 
   if (isMobile) {
     return (
@@ -48,10 +48,9 @@ export function SidebarNav() {
                   <Link
                     key={item.label}
                     href={item.href}
-                    onClick={() => setActiveItem(item.label)}
                     className={cn(
                       "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100",
-                      activeItem === item.label
+                      pathname === item.href
                         ? "bg-orange-100 text-orange-700"
                         : "text-gray-700"
                     )}
@@ -94,11 +93,10 @@ export function SidebarNav() {
           <Link
             key={item.label}
             href={item.href}
-            onClick={() => setActiveItem(item.label)}
             className={cn(
               // Adjust padding for collapsed/expanded
               "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100 mb-1",
-              activeItem === item.label
+              pathname === item.href
                 ? "bg-orange-100 text-orange-700"
                 : "text-gray-700",
               // Center icon when collapsed
