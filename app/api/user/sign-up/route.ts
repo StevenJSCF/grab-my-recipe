@@ -8,7 +8,9 @@ export async function POST(req: NextRequest) {
   const normalizedUsername = username.toLowerCase();
 
   // Check if username exists (case-insensitive)
-  const existingUser = await prisma.user.findUnique({ where: { username: normalizedUsername } });
+  const existingUser = await prisma.user.findUnique({
+    where: { username: normalizedUsername },
+  });
   if (existingUser) {
     return NextResponse.json(
       { error: "username already exists" },
@@ -47,6 +49,7 @@ export async function POST(req: NextRequest) {
     httpOnly: true,
     path: "/",
     sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 30, // 30 days
   });
 
   return res;
