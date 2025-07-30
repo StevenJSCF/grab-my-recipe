@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
       username,
       password: hashedPassword,
       name,
+      image: "male1-profile-pic.png", // Default image
     },
   });
 
