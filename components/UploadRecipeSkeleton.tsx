@@ -2,7 +2,7 @@ import React from "react";
 
 export function UploadRecipeSkeleton() {
   return (
-    <div className="animate-pulse w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-lg p-4 sm:p-8 md:p-10 mt-8">
+    <div className="animate-pulse w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-4 sm:p-8 md:p-10 mt-8">
       <div className="flex flex-col gap-12">
         {/* Thumbnail and Info */}
         <div className="flex flex-col items-center w-full">
@@ -11,8 +11,8 @@ export function UploadRecipeSkeleton() {
           <div className="h-4 w-1/3 bg-gray-200 rounded mb-1" />
           <div className="h-4 w-1/4 bg-gray-200 rounded mb-2" />
           <div className="flex justify-center gap-4 mt-2 w-full">
-            <div className="h-6 w-32 bg-orange-100 dark:bg-orange-900 rounded-full" />
-            <div className="h-6 w-32 bg-orange-100 dark:bg-orange-900 rounded-full" />
+            <div className="h-6 w-32 bg-orange-100 rounded-full" />
+            <div className="h-6 w-32 bg-orange-100 rounded-full" />
           </div>
         </div>
         {/* Ingredients and Instructions */}

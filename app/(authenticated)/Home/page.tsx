@@ -29,9 +29,9 @@ export default function HomePage() {
       <div className="container max-w-3xl mx-auto flex flex-col items-center justify-center py-10">
         {/* Header */}
         <div className="flex items-center space-x-3 mb-8">
-          <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
-            <BookOpen className="w-6 h-6 text-white" />
-          </div>
+        <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+          <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+        </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-center text-gray-900">
             {user
               ? `Welcome to GrabMyRecipe, ${user.name}!`
