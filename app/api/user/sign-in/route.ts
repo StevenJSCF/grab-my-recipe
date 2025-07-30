@@ -7,7 +7,9 @@ export async function POST(req: NextRequest) {
   const { username, password } = await req.json();
   const normalizedUsername = username.toLowerCase();
 
-  const user = await prisma.user.findUnique({ where: { username: normalizedUsername } });
+  const user = await prisma.user.findUnique({
+    where: { username: normalizedUsername },
+  });
   if (!user || !user.password) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
@@ -36,6 +38,7 @@ export async function POST(req: NextRequest) {
     httpOnly: true,
     path: "/",
     sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 30, // 30 days
   });
 
   return res;
