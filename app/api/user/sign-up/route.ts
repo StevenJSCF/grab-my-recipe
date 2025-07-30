@@ -4,11 +4,11 @@ import { randomBytes } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  let { username, password, name } = await req.json();
-  username = username.toLowerCase();
+  const { username, password, name } = await req.json();
+  const normalizedUsername = username.toLowerCase();
 
   // Check if username exists (case-insensitive)
-  const existingUser = await prisma.user.findUnique({ where: { username } });
+  const existingUser = await prisma.user.findUnique({ where: { username: normalizedUsername } });
   if (existingUser) {
     return NextResponse.json(
       { error: "username already exists" },
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   const hashedPassword = await bcrypt.hash(password, 12);
   const user = await prisma.user.create({
     data: {
-      username,
+      username: normalizedUsername,
       password: hashedPassword,
       name,
       image: "male-profile-pic.png", // Default image
