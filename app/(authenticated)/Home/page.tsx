@@ -50,8 +50,8 @@ export default function HomePage() {
 
         {/* Description */}
         <p className="text-center text-base sm:text-lg text-gray-700 mb-8 max-w-md">
-          Your personal recipe dashboard. Quickly access your recipes, upload
-          new ones, or check your favorites. Stay organized and inspired!
+          Your personal recipe dashboard. Upload a YouTube video, extract the steps and ingredients, 
+          and save your favorite recipes all in one place. Stay organized and inspired!
         </p>
 
         {/* Action Cards */}
