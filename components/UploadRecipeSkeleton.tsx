@@ -2,11 +2,11 @@ import React from "react";
 
 export function UploadRecipeSkeleton() {
   return (
-    <div className="animate-pulse w-full max-w-3xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-lg p-10 mt-8">
+    <div className="animate-pulse w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-lg p-4 sm:p-8 md:p-10 mt-8">
       <div className="flex flex-col gap-12">
         {/* Thumbnail and Info */}
-        <div className="flex flex-col items-center">
-          <div className="w-[320px] h-[240px] bg-gray-300 rounded-lg border border-orange-200 shadow mb-4" />
+        <div className="flex flex-col items-center w-full">
+          <div className="w-full max-w-xs aspect-video bg-gray-300 rounded-lg border border-orange-200 shadow mb-4" />
           <div className="h-8 w-2/3 bg-gray-300 rounded mb-2" />
           <div className="h-4 w-1/3 bg-gray-200 rounded mb-1" />
           <div className="h-4 w-1/4 bg-gray-200 rounded mb-2" />

@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+// middleware.ts
+import { NextRequest, NextResponse } from "next/server";
 
+// Define which routes should be protected
 const protectedRoutes = [
   "/UploadRecipe",
   "/Recipes",
@@ -10,56 +11,27 @@ const protectedRoutes = [
   // add more as needed
 ];
 
-export async function middleware(request: NextRequest): Promise<NextResponse> {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check if the route is protected
-  if (protectedRoutes.some((route) => pathname.startsWith(route))) {
-    const token = request.cookies.get("session")?.value ?? null;
-    if (!token) {
-      // Redirect to landing page if not authenticated
-      return NextResponse.redirect(new URL("/", request.url));
-    }
+  // Only run on protected routes
+  if (!protectedRoutes.some((path) => pathname.startsWith(path))) {
+    return NextResponse.next();
   }
 
-  if (request.method === "GET") {
-    const response = NextResponse.next();
-    const token = request.cookies.get("session")?.value ?? null;
-    if (token !== null) {
-      // Only extend cookie expiration on GET requests since we can be sure
-      // a new session wasn't set when handling the request.
-      response.cookies.set("session", token, {
-        path: "/",
-        maxAge: 60 * 60 * 24 * 30,
-        sameSite: "lax",
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-      });
-    }
-    return response;
+  const sessionCookie = request.cookies.get("session")?.value;
+  if (!sessionCookie) {
+    return NextResponse.redirect(new URL("/signin", request.url));
   }
 
-  // CSRF protection
-  const originHeader = request.headers.get("Origin");
-  // NOTE: You may need to use `X-Forwarded-Host` instead
-  const hostHeader = request.headers.get("Host");
-  if (originHeader === null || hostHeader === null) {
-    return new NextResponse(null, {
-      status: 403,
-    });
+  // Optionally, check format (e.g. sessionId|sessionSecret)
+  const [sessionId, sessionSecret] = sessionCookie.split("|");
+  if (!sessionId || !sessionSecret) {
+    return NextResponse.redirect(new URL("/signin", request.url));
   }
-  let origin: URL;
-  try {
-    origin = new URL(originHeader);
-  } catch {
-    return new NextResponse(null, {
-      status: 403,
-    });
-  }
-  if (origin.host !== hostHeader) {
-    return new NextResponse(null, {
-      status: 403,
-    });
-  }
+
+  // Do NOT validate session in middleware (Edge runtime can't use Prisma/bcrypt)
+  // Do validation in API routes or server actions instead
+
   return NextResponse.next();
 }

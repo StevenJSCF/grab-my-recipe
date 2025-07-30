@@ -173,7 +173,7 @@ export default function EditRecipeForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-10"
+      className="bg-white rounded-xl shadow-lg p-10"
     >
       <div className="flex flex-col gap-12">
         {/* Left: image and Info */}
@@ -186,24 +186,24 @@ export default function EditRecipeForm({
             className="rounded-lg border border-orange-200 shadow"
           />
           <input
-            className="mt-4 text-2xl font-bold text-orange-700 dark:text-orange-300 text-center bg-transparent border-b border-orange-200 focus:outline-none focus:border-orange-400"
+            className="mt-4 text-2xl font-bold text-orange-700 text-center bg-transparent border-b border-orange-200 focus:outline-none focus:border-orange-400"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <input
-            className="text-md text-gray-700 dark:text-gray-300 mt-1 text-center bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400"
+            className="text-md text-gray-700 mt-1 text-center bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400"
             value={channel}
             onChange={(e) => setChannel(e.target.value)}
           />
           <div className="flex justify-center gap-4 mt-2">
             <input
-              className="bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-200 px-3 py-1 rounded-full text-sm font-semibold w-28 text-center border border-orange-200 focus:outline-none focus:border-orange-400"
+              className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-semibold w-28 text-center border border-orange-200 focus:outline-none focus:border-orange-400"
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
               placeholder="Ready In"
             />
             <input
-              className="bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-200 px-3 py-1 rounded-full text-sm font-semibold w-20 text-center border border-orange-200 focus:outline-none focus:border-orange-400"
+              className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-semibold w-20 text-center border border-orange-200 focus:outline-none focus:border-orange-400"
               value={serving}
               onChange={(e) => setServing(e.target.value)}
               placeholder="Serves"
@@ -213,17 +213,17 @@ export default function EditRecipeForm({
         {/* Right: Ingredients and Instructions */}
         <div className="flex-1 flex flex-col gap-8">
           <div>
-            <h3 className="text-xl font-bold mb-2 text-orange-600 dark:text-orange-300">
+            <h3 className="text-xl font-bold mb-2 text-orange-600">
               Ingredients
             </h3>
             <ul className="list-disc list-inside space-y-1">
               {ingredients.map((ingredient, idx) => (
                 <li
                   key={idx}
-                  className="flex gap-2 items-center text-gray-800 dark:text-gray-200"
+                  className="flex flex-wrap gap-2 items-center text-gray-800 w-full max-w-full"
                 >
                   <input
-                    className="flex-1 bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400 px-1"
+                    className="flex-1 min-w-0 bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400 px-1 max-w-xs"
                     value={ingredient.name}
                     onChange={(e) =>
                       handleIngredientChange(idx, "name", e.target.value)
@@ -231,7 +231,7 @@ export default function EditRecipeForm({
                     placeholder="Ingredient name"
                   />
                   <input
-                    className="w-20 bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400 px-1 text-right"
+                    className="w-20 min-w-0 bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400 px-1 text-right max-w-[5.5rem]"
                     value={ingredient.quantity}
                     onChange={(e) =>
                       handleIngredientChange(idx, "quantity", e.target.value)
@@ -250,25 +250,22 @@ export default function EditRecipeForm({
             </ul>
             <button
               type="button"
-              className="mt-2 text-orange-600 dark:text-orange-300 font-semibold"
+              className="mt-2 text-orange-600 font-semibold"
               onClick={addIngredient}
             >
               + Add Ingredient
             </button>
           </div>
           <div>
-            <h3 className="text-xl font-bold mb-2 text-orange-600 dark:text-orange-300">
+            <h3 className="text-xl font-bold mb-2 text-orange-600">
               Instructions
             </h3>
             <ol className="list-decimal list-inside space-y-1">
               {instructions.map((instruction, idx) => (
-                <li
-                  key={idx}
-                  className="flex gap-2 items-center text-gray-800 dark:text-gray-200"
-                >
+                <li key={idx} className="flex gap-2 items-center text-gray-800">
                   <button
                     type="button"
-                    className="flex-1 text-left bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400 px-1 hover:bg-orange-50 dark:hover:bg-orange-950 rounded"
+                    className="flex-1 text-left bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400 px-1 hover:bg-orange-50 rounded"
                     onClick={() => openInstructionModal(idx)}
                     title="Click to edit full instruction"
                   >
@@ -293,21 +290,21 @@ export default function EditRecipeForm({
                 onClick={closeInstructionModal}
               >
                 <div
-                  className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 max-w-lg w-full relative"
+                  className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full relative"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
-                    className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 dark:hover:text-white"
+                    className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
                     onClick={closeInstructionModal}
                     aria-label="Close"
                   >
                     &times;
                   </button>
-                  <h3 className="text-lg font-bold mb-2 text-orange-600 dark:text-orange-300">
+                  <h3 className="text-lg font-bold mb-2 text-orange-600">
                     Edit Step {editingInstructionIdx + 1}
                   </h3>
                   <textarea
-                    className="w-full min-h-[120px] border border-gray-300 dark:border-gray-700 rounded p-2 text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full min-h-[120px] border border-gray-300 rounded p-2 text-gray-900 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
                     value={editingInstructionValue}
                     onChange={(e) => setEditingInstructionValue(e.target.value)}
                     placeholder="Edit instruction..."
@@ -316,7 +313,7 @@ export default function EditRecipeForm({
                   <div className="flex justify-end gap-2 mt-4">
                     <button
                       type="button"
-                      className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-bold py-2 px-4 rounded-lg shadow"
+                      className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg shadow"
                       onClick={closeInstructionModal}
                     >
                       Cancel
@@ -334,7 +331,7 @@ export default function EditRecipeForm({
             )}
             <button
               type="button"
-              className="mt-2 text-orange-600 dark:text-orange-300 font-semibold"
+              className="mt-2 text-orange-600 font-semibold"
               onClick={addInstruction}
             >
               + Add Instruction
@@ -356,7 +353,7 @@ export default function EditRecipeForm({
                 if (onSave) onSave();
                 else if (onClose) onClose();
               } catch (error) {
-                toast.error("Failed to delete recipe",);
+                toast.error("Failed to delete recipe");
                 console.error("Delete recipe error:", error);
               }
             }

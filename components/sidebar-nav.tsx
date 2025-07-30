@@ -50,10 +50,10 @@ export function SidebarNav() {
                     href={item.href}
                     onClick={() => setActiveItem(item.label)}
                     className={cn(
-                      "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
+                      "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100",
                       activeItem === item.label
-                        ? "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300"
-                        : "text-gray-700 dark:text-gray-300"
+                        ? "bg-orange-100 text-orange-700"
+                        : "text-gray-700"
                     )}
                     scroll={false}
                     prefetch={true}
@@ -75,11 +75,11 @@ export function SidebarNav() {
     <div
       className={cn(
         // Responsive width: narrow on md, wide on lg
-        "hidden md:flex md:w-16 lg:w-64 flex-col bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transition-all duration-300 ease-in-out h-screen fixed left-0 top-0 z-40"
+        "hidden md:flex md:w-16 lg:w-64 flex-col bg-white border-r border-gray-200 transition-all duration-300 ease-in-out h-screen fixed left-0 top-0 z-40"
       )}
     >
       {/* Show logo and name on large screens, only logo on medium screens */}
-      <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0 flex items-center justify-center">
+      <div className="p-4 border-b border-gray-200 flex-shrink-0 flex items-center justify-center">
         <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
           <BookOpen className="w-5 h-5 text-white" />
         </div>
@@ -97,10 +97,10 @@ export function SidebarNav() {
             onClick={() => setActiveItem(item.label)}
             className={cn(
               // Adjust padding for collapsed/expanded
-              "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 mb-1",
+              "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-gray-100 mb-1",
               activeItem === item.label
-                ? "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300"
-                : "text-gray-700 dark:text-gray-300",
+                ? "bg-orange-100 text-orange-700"
+                : "text-gray-700",
               // Center icon when collapsed
               "md:justify-center lg:justify-start"
             )}

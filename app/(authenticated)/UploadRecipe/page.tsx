@@ -39,7 +39,7 @@ export default function UploadRecipePage() {
         console.log("Transcript Data CONTENT:", transcriptData.content);
         const transcript = transcriptData.content;
         if (!transcript) {
-            toast.error("Transcript not found for this video.");
+          toast.error("Transcript not found for this video.");
         }
         // Fetch YouTube metadata from your own API route (server-side)
         const youtubeRes = await fetch("/api/youtube/google-ytv3", {
@@ -85,6 +85,7 @@ export default function UploadRecipePage() {
           body: JSON.stringify(combined),
         });
         const data = await response.json();
+        console.log("Parsed Recipe Data:", data.output_text);
         const parsedRecipe = JSON.parse(data.output_text);
         const fullRecipe = {
           ...parsedRecipe,
@@ -151,15 +152,15 @@ export default function UploadRecipePage() {
   };
 
   return (
-    <div className="min-h-screen dark:from-gray-900 dark:to-gray-800 flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-8">
-        <div className="w-full max-w-xl bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 mt-8">
+        <div className="w-full max-w-xl bg-white rounded-xl shadow-lg p-8 mt-8">
           {uploadRecipe ? (
             <>
-              <h1 className="text-4xl font-extrabold text-center text-orange-600 dark:text-orange-300 mb-4">
+              <h1 className="text-4xl font-extrabold text-center text-orange-600 mb-4">
                 Grab My Recipe
               </h1>
-              <p className="text-lg text-center text-gray-700 dark:text-gray-300 mb-6">
+              <p className="text-lg text-center text-gray-700 mb-6">
                 Paste a YouTube cooking video URL below to extract the recipe!
               </p>
               <div className="flex gap-2 mb-4">

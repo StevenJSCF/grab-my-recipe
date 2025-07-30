@@ -1,13 +1,17 @@
+
 import { NextResponse } from "next/server";
 import { getRecipes } from "@/lib/db/actions/recipes.action";
-import { auth } from "@/auth";
+import { getUserFromSession } from "@/lib/getUserFromSession";
 
 export async function GET() {
-  const session = await auth();
-  if (!session || !session.user || !session.user.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+   const sessionData = await getUserFromSession();
+     if (!sessionData) {
+       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     }
 
-  const recipes = await getRecipes(session.user.id);
+      const { user, sessionId } = sessionData;
+      void sessionId; // Use sessionId to satisfy build (not needed here)
+      
+  const recipes = await getRecipes(user.id);
   return NextResponse.json({ recipes }, { status: 200 });
 }
