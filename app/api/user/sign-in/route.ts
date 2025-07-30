@@ -4,7 +4,8 @@ import { randomBytes } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { username, password } = await req.json();
+  let { username, password } = await req.json();
+  username = username.toLowerCase();
 
   const user = await prisma.user.findUnique({ where: { username } });
   if (!user || !user.password) {
