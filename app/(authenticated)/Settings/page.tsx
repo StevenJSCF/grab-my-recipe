@@ -69,7 +69,7 @@ export default function SettingsPage() {
         setError(data.error || "Failed to update profile image");
       }
     } catch (err) {
-      setError("Failed to update profile image");
+      setError("Failed to update profile image" + (err ? `: ${err}` : ""));
     }
     setSaving(false);
   }
@@ -169,7 +169,7 @@ export default function SettingsPage() {
                 setError(data.error || "Failed to update profile");
               }
             } catch (err) {
-              setError("Failed to update profile");
+              setError("Failed to update profile" + (err ? `: ${err}` : ""));
             }
             setSaving(false);
           }}

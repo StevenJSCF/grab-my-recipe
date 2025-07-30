@@ -190,7 +190,7 @@ export default function RecipesPage() {
           </div>
         ) : recipes.length === 0 ? (
           <div className="text-center text-gray-500 dark:text-gray-300 py-10">
-            You don't have any recipes yet.
+            You don&apos;t have any recipes yet.
             <br />
             <span className="block mt-2">Please upload your first recipe!</span>
           </div>
