@@ -5,18 +5,22 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const { username, password, name } = await req.json();
+  const normalizedUsername = username.toLowerCase();
 
-  // Check if username exists
-  const existingUser = await prisma.user.findUnique({ where: { username } });
+  // Check if username exists (case-insensitive)
+  const existingUser = await prisma.user.findUnique({ where: { username: normalizedUsername } });
   if (existingUser) {
-    return NextResponse.json({ error: "username already exists" }, { status: 400 });
+    return NextResponse.json(
+      { error: "username already exists" },
+      { status: 400 }
+    );
   }
 
   // Create user
   const hashedPassword = await bcrypt.hash(password, 12);
   const user = await prisma.user.create({
     data: {
-      username,
+      username: normalizedUsername,
       password: hashedPassword,
       name,
       image: "male-profile-pic.png", // Default image
