@@ -45,6 +45,35 @@ export default function SettingsPage() {
     );
   }
 
+  async function handleIconChange(gender: "male" | "female") {
+    setShowModal(false);
+    setSaving(true);
+    setError("");
+    try {
+      const newImage = user.image.replace(/male|female/, gender);
+      const res = await fetch("/api/user/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: user.id,
+          data: { image: newImage },
+        }),
+      });
+      if (res.ok) {
+        toast.success("Profile image updated!");
+        queryClient.setQueryData(["user"], (prev: any) =>
+          prev ? { ...prev, image: newImage } : prev
+        );
+      } else {
+        const data = await res.json();
+        setError(data.error || "Failed to update profile image");
+      }
+    } catch (err) {
+      setError("Failed to update profile image");
+    }
+    setSaving(false);
+  }
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-6">
       <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[320px]">
@@ -81,43 +110,29 @@ export default function SettingsPage() {
                 &times;
               </button>
               <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-                Choose Female Icon
+                Choose Your Avatar
               </h2>
               <div className="flex gap-6">
+                {/* Female Icon */}
                 <img
-                  src={`/profile-pics/${user.image.replace("male", "female")}`}
+                  src={`/profile-pics/${user.image.replace(
+                    /male|female/,
+                    "female"
+                  )}`}
                   alt="Female Icon"
-                  className="w-24 h-24 rounded-full border-4 border-pink-500 object-cover cursor-pointer hover:scale-105 transition-transform"
-                  onClick={async () => {
-                    setShowModal(false);
-                    setSaving(true);
-                    setError("");
-                    try {
-                      const newImage = user.image.replace("male", "female");
-                      const res = await fetch("/api/user/update", {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                          id: user.id,
-                          data: { image: newImage },
-                        }),
-                      });
-                      if (res.ok) {
-                        toast.success("Profile image updated!");
-                        queryClient.setQueryData(["user"], (prev: any) =>
-                          prev ? { ...prev, image: newImage } : prev
-                        );
-                      } else {
-                        const data = await res.json();
-                        setError(
-                          data.error || "Failed to update profile image"
-                        );
-                      }
-                    } catch (err) {
-                      setError("Failed to update profile image");
-                    }
-                    setSaving(false);
-                  }}
+                  className="w-24 h-24 rounded-full border-4 border-orange-500 object-cover cursor-pointer hover:scale-105 transition-transform"
+                  onClick={() => handleIconChange("female")}
+                />
+
+                {/* Male Icon */}
+                <img
+                  src={`/profile-pics/${user.image.replace(
+                    /male|female/,
+                    "male"
+                  )}`}
+                  alt="Male Icon"
+                  className="w-24 h-24 rounded-full border-4 border-orange-500 object-cover cursor-pointer hover:scale-105 transition-transform"
+                  onClick={() => handleIconChange("male")}
                 />
               </div>
               {error && (
