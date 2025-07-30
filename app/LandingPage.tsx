@@ -1,5 +1,4 @@
 "use client";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Save, BookOpen, ArrowRight, Upload, Zap } from "lucide-react";
@@ -36,16 +35,14 @@ export default function LandingPage() {
     }
   }, [showDemoToast]);
   return (
-    <div className="min-h-screen dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen">
       {/* Header */}
       <header className="container mx-auto px-4 py-6 flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
             <BookOpen className="w-5 h-5 text-white" />
           </div>
-          <span className="text-xl font-bold text-gray-900 dark:text-white">
-            GrabMyRecipe
-          </span>
+          <span className="text-xl font-bold text-gray-900">GrabMyRecipe</span>
         </div>
         <div className="flex items-center space-x-4">
           <SignInButton />
@@ -56,17 +53,16 @@ export default function LandingPage() {
           >
             Sign Up
           </Button>
-          <ThemeToggle />
         </div>
       </header>
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
             Turn Screenshots into
             <span className="text-orange-500 block">Perfect Recipes</span>
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Upload a cooking YouTube video URL. This app will extract and format
             everything perfectly, so you can save and organize your favorite
             recipes effortlessly.
@@ -109,10 +105,10 @@ export default function LandingPage() {
       {/* How It Works Section */}
       <section className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             How It Works
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Transform any YouTube video recipe into a perfectly formatted,
             saveable recipe in just three simple steps.
           </p>
@@ -121,11 +117,11 @@ export default function LandingPage() {
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <Card className="text-center p-6 border-2 hover:border-orange-200 transition-colors">
             <CardContent className="pt-6">
-              <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Upload className="w-8 h-8 text-orange-500" />
               </div>
               <h3 className="text-xl font-semibold mb-3">1. Paste URL</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600">
                 Simply paste the URL of a cooking YouTube video.
               </p>
             </CardContent>
@@ -133,13 +129,13 @@ export default function LandingPage() {
 
           <Card className="text-center p-6 border-2 hover:border-orange-200 transition-colors">
             <CardContent className="pt-6">
-              <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Zap className="w-8 h-8 text-orange-500" />
               </div>
               <h3 className="text-xl font-semibold mb-3">
                 2. Extract & Format
               </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600">
                 Our technology automatically extracts and formats the
                 ingredients list and instructions perfectly.
               </p>
@@ -148,13 +144,11 @@ export default function LandingPage() {
 
           <Card className="text-center p-6 border-2 hover:border-orange-200 transition-colors">
             <CardContent className="pt-6">
-              <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Save className="w-8 h-8 text-orange-500" />
               </div>
               <h3 className="text-xl font-semibold mb-3">3. Save & Access</h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Review and enjoy the recipe!.
-              </p>
+              <p className="text-gray-600">Review and enjoy the recipe!.</p>
             </CardContent>
           </Card>
         </div>

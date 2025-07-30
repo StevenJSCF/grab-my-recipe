@@ -98,9 +98,9 @@ export default function RecipesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="px-6 py-4 flex flex-col sm:flex-row gap-4 items-center justify-between">
           <div className="flex items-center gap-3">
             {user && user.image && (
@@ -110,7 +110,7 @@ export default function RecipesPage() {
                 className="w-10 h-10 rounded-full border-2 border-orange-400 object-cover"
               />
             )}
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl font-bold text-gray-900">
               {user && user.name ? `${user.name}'s Recipes` : "My Recipes"}
             </h1>
           </div>
@@ -152,7 +152,7 @@ export default function RecipesPage() {
                       e.target.value as "all" | "favorites" | "non-favorites"
                     )
                   }
-                  className="block w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 py-2 pl-3 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 dark:text-gray-200"
+                  className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700"
                 >
                   <option value="all">All Recipes</option>
                   <option value="favorites">Favorites</option>
@@ -166,7 +166,7 @@ export default function RecipesPage() {
                   onChange={(e) =>
                     setSortDate(e.target.value as "newest" | "oldest")
                   }
-                  className="block w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 py-2 pl-3 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 dark:text-gray-200"
+                  className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700"
                 >
                   <option value="newest">Newest</option>
                   <option value="oldest">Oldest</option>
@@ -181,7 +181,7 @@ export default function RecipesPage() {
       <div className="px-6 py-6">
         {/* Show loading spinner or message if loading */}
         {isRecipesLoading ? (
-          <div className="text-center text-gray-500 dark:text-gray-300 py-10">
+          <div className="text-center text-gray-500 py-10">
             Loading recipes...
           </div>
         ) : !recipes ? (
@@ -189,7 +189,7 @@ export default function RecipesPage() {
             Failed to load recipes.
           </div>
         ) : recipes.length === 0 ? (
-          <div className="text-center text-gray-500 dark:text-gray-300 py-10">
+          <div className="text-center text-gray-500 py-10">
             You don&apos;t have any recipes yet.
             <br />
             <span className="block mt-2">Please upload your first recipe!</span>
@@ -223,7 +223,7 @@ export default function RecipesPage() {
               })
               .map((recipe: RecipeType) => (
                 <div
-                  className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow hover:shadow-md transition-shadow flex flex-col cursor-pointer relative"
+                  className="bg-white rounded-lg p-4 shadow hover:shadow-md transition-shadow flex flex-col cursor-pointer relative"
                   onClick={() => {
                     setSelectedRecipe(recipe);
                     console.log("Selected recipe:", recipe);
@@ -238,10 +238,10 @@ export default function RecipesPage() {
                     width={200}
                     height={200}
                   />
-                  <h3 className="font-bold text-lg mb-1 text-gray-900 dark:text-white line-clamp-2">
+                  <h3 className="font-bold text-lg mb-1 text-gray-900 line-clamp-2">
                     {recipe.title}
                   </h3>
-                  <div className="flex flex-col gap-1 text-xs text-gray-500 dark:text-gray-400 mb-1">
+                  <div className="flex flex-col gap-1 text-xs text-gray-500 mb-1">
                     <span className="text-base">{recipe.channel}</span>
                     <div className="flex gap-2 mt-1">
                       <button
@@ -310,7 +310,7 @@ export default function RecipesPage() {
               })
               .map((recipe: RecipeType) => (
                 <div
-                  className="bg-white dark:bg-gray-800 rounded-lg p-4 flex items-center space-x-4 hover:shadow-md transition-shadow cursor-pointer"
+                  className="bg-white rounded-lg p-4 flex items-center space-x-4 hover:shadow-md transition-shadow cursor-pointer"
                   onClick={() => {
                     setSelectedRecipe(recipe);
                     setShowModal(true);
@@ -325,10 +325,10 @@ export default function RecipesPage() {
                     height={200}
                   />
                   <div className="flex-1">
-                    <h3 className="font-semibold text-lg mb-1 text-gray-900 dark:text-white">
+                    <h3 className="font-semibold text-lg mb-1 text-gray-900">
                       {recipe.title}
                     </h3>
-                    <div className="flex flex-col gap-1 text-xs text-gray-500 dark:text-gray-400 mb-1">
+                    <div className="flex flex-col gap-1 text-xs text-gray-500 mb-1">
                       <span className="text-base">{recipe.channel}</span>
                       <div className="flex gap-2 mt-1">
                         <button
@@ -377,11 +377,11 @@ export default function RecipesPage() {
             onClick={() => setShowModal(false)}
           >
             <div
-              className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 max-w-2xl w-full relative max-h-[80vh] overflow-y-auto"
+              className="bg-white rounded-lg shadow-lg p-6 max-w-2xl w-full relative max-h-[80vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <button
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 dark:hover:text-white"
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
                 onClick={() => setShowModal(false)}
                 aria-label="Close"
               >
@@ -398,11 +398,11 @@ export default function RecipesPage() {
             onClick={() => setShowEditModal(false)}
           >
             <div
-              className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 max-w-2xl w-full relative max-h-[80vh] overflow-y-auto"
+              className="bg-white rounded-lg shadow-lg p-6 max-w-2xl w-full relative max-h-[80vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <button
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 dark:hover:text-white"
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
                 onClick={() => setShowEditModal(false)}
                 aria-label="Close"
               >

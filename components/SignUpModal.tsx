@@ -74,7 +74,7 @@ export default function SignUpModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
-      <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg min-w-[320px] flex flex-col gap-4">
+      <div className="bg-white p-6 rounded-lg shadow-lg min-w-[320px] flex flex-col gap-4">
         <h2 className="text-lg font-semibold mb-2">Sign Up</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <input

@@ -76,11 +76,11 @@ export default function SettingsPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-6">
-      <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[320px]">
+      <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center gap-4 min-w-[320px]">
         <div className="text-lg mb-2">
           Hey <span className="font-semibold">{user.name}</span>, you are signed
           in.
-          <div className="text-sm text-gray-500 dark:text-gray-400 text-center">
+          <div className="text-sm text-gray-500 text-center">
             Yeah, no kidding
           </div>
         </div>
@@ -101,15 +101,15 @@ export default function SettingsPage() {
             className="fixed inset-0 z-50 flex items-center justify-center"
             style={{ background: "rgba(0,0,0,0.3)" }}
           >
-            <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-lg shadow-lg p-6 flex flex-col items-center relative">
+            <div className="bg-white/80 backdrop-blur-md rounded-lg shadow-lg p-6 flex flex-col items-center relative">
               <button
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 dark:hover:text-white text-2xl"
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl"
                 onClick={() => setShowModal(false)}
                 aria-label="Close"
               >
                 &times;
               </button>
-              <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+              <h2 className="text-lg font-semibold mb-4 text-gray-900">
                 Choose Your Avatar
               </h2>
               <div className="flex gap-6">
