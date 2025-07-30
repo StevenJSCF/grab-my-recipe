@@ -26,7 +26,7 @@ export default function RecipesPage() {
 
   // Use React Query for fetching recipes
   const queryClient = useQueryClient();
-  const { data: recipes, isLoading } = useQuery({
+  const { data: recipes, isLoading: isRecipesLoading } = useQuery({
     queryKey: ["recipes"],
     queryFn: async () => {
       const res = await fetch("/api/recipe/getRecipes");
@@ -35,6 +35,25 @@ export default function RecipesPage() {
       return data.recipes;
     },
   });
+
+  const { data: user, isLoading: isUserLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => {
+      const res = await fetch("/api/user/getUserById");
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data.user;
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  if (isRecipesLoading || isUserLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        Loading...
+      </div>
+    );
+  }
 
   // Update recipe and refetch recipes after mutation
   const updateRecipe = async (
@@ -84,7 +103,7 @@ export default function RecipesPage() {
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
         <div className="px-6 py-4 flex flex-col sm:flex-row gap-4 items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            My Recipes
+            {user && user.name ? `${user.name}'s Recipes` : "My Recipes"}
           </h1>
           <div className="flex items-center space-x-2">
             <Button
@@ -152,13 +171,19 @@ export default function RecipesPage() {
       {/* Content */}
       <div className="px-6 py-6">
         {/* Show loading spinner or message if loading */}
-        {isLoading ? (
+        {isRecipesLoading ? (
           <div className="text-center text-gray-500 dark:text-gray-300 py-10">
             Loading recipes...
           </div>
         ) : !recipes ? (
           <div className="text-center text-red-500 py-10">
             Failed to load recipes.
+          </div>
+        ) : recipes.length === 0 ? (
+          <div className="text-center text-gray-500 dark:text-gray-300 py-10">
+            You don't have any recipes yet.
+            <br />
+            <span className="block mt-2">Please upload your first recipe!</span>
           </div>
         ) : viewMode === "grid" ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

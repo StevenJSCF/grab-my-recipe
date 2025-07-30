@@ -5,3 +5,13 @@ import prisma from "@/lib/prisma";
 export const getUserById = async (id: string) => {
   return await prisma.user.findUnique({ where: { id } });
 };
+
+export const updateUser = async (
+  id: string,
+  data: Partial<{ name: string, username: string }>
+) => {
+  return await prisma.user.update({
+    where: { id },
+    data,
+  });
+};

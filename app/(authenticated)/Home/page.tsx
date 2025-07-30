@@ -1,27 +1,28 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BookOpen, Upload } from "lucide-react";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 
 export default function HomePage() {
-  const [user, setUser] = useState<{ name: string } | null>(null);
+  const { data: user, isLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => {
+      const res = await fetch("/api/user/getUserById");
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data.user;
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
 
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const res = await fetch("/api/user/getUserById");
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data.user);
-        } else {
-          setUser(null);
-        }
-      } catch {
-        setUser(null);
-      }
-    }
-    fetchUser();
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen dark:from-gray-900 dark:to-gray-800 flex flex-col items-center justify-center p-8">
@@ -31,7 +32,7 @@ export default function HomePage() {
         </div>
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
           {user
-              ? `Welcome to GrabMyRecipe, ${user.name}!`
+            ? `Welcome to GrabMyRecipe, ${user.name}!`
             : "Welcome to GrabMyRecipe!"}
         </h1>
       </div>
@@ -65,8 +66,7 @@ export default function HomePage() {
         </h2>
         <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 text-base space-y-1">
           <li>
-            Currently the app does not support videos in languages other than
-            English.
+            The app supports videos in any language
           </li>
           <li>
             The longer the video, the more it will take to output the data.
@@ -76,14 +76,17 @@ export default function HomePage() {
             check the video if it does not work.
           </li>
           <li>
+            The app is still in beta, so expect some bugs and issues.
+          </li>
+          <li>
             Please report any bugs to
             <a
               href="mailto:stevenjscf@gmail.com"
-              className="underline text-orange-500 hover:text-orange-700 ml-1"
+              className="underline text-orange-500 hover:text-orange-700 ml-1 mr-1"
             >
               stevenchiang12300@gmail.com
             </a>
-            .
+            Thank you!
           </li>
         </ul>
       </div>

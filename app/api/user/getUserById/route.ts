@@ -24,6 +24,6 @@ export async function GET() {
   }
 
   // Only return safe user fields
-  const { id, name } = session.user;
-  return NextResponse.json({ user: { id, name } }, { status: 200 });
+  const { id, name, username } = session.user;
+  return NextResponse.json({ user: { id, name, username } }, { status: 200 });
 }
