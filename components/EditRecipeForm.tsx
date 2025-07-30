@@ -220,10 +220,10 @@ export default function EditRecipeForm({
               {ingredients.map((ingredient, idx) => (
                 <li
                   key={idx}
-                  className="flex gap-2 items-center text-gray-800 dark:text-gray-200"
+                  className="flex flex-wrap gap-2 items-center text-gray-800 dark:text-gray-200 w-full max-w-full"
                 >
                   <input
-                    className="flex-1 bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400 px-1"
+                    className="flex-1 min-w-0 bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400 px-1 max-w-xs"
                     value={ingredient.name}
                     onChange={(e) =>
                       handleIngredientChange(idx, "name", e.target.value)
@@ -231,7 +231,7 @@ export default function EditRecipeForm({
                     placeholder="Ingredient name"
                   />
                   <input
-                    className="w-20 bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400 px-1 text-right"
+                    className="w-20 min-w-0 bg-transparent border-b border-gray-200 focus:outline-none focus:border-orange-400 px-1 text-right max-w-[5.5rem]"
                     value={ingredient.quantity}
                     onChange={(e) =>
                       handleIngredientChange(idx, "quantity", e.target.value)
@@ -356,7 +356,7 @@ export default function EditRecipeForm({
                 if (onSave) onSave();
                 else if (onClose) onClose();
               } catch (error) {
-                toast.error("Failed to delete recipe",);
+                toast.error("Failed to delete recipe");
                 console.error("Delete recipe error:", error);
               }
             }

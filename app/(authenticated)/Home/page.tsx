@@ -25,7 +25,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen dark:from-gray-900 dark:to-gray-800 flex flex-col items-center justify-center p-8">
+  <div className="min-h-screen w-full overflow-x-hidden dark:from-gray-900 dark:to-gray-800 flex flex-col items-center justify-center p-4 sm:p-8">
       <div className="flex items-center space-x-3 mb-8">
         <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
           <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
