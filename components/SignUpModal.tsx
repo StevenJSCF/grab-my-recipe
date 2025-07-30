@@ -37,15 +37,26 @@ export default function SignUpModal({
     setError(null);
     setSuccess(false);
 
-    if (!username || !password || !confirm || !name) {
+    // Remove all spaces from input values
+    const trimmedUsername = username.replace(/\s+/g, "");
+    const trimmedName = name.replace(/\s+/g, "");
+    const trimmedPassword = password.replace(/\s+/g, "");
+    const trimmedConfirm = confirm.replace(/\s+/g, "");
+
+    if (
+      !trimmedUsername ||
+      !trimmedPassword ||
+      !trimmedConfirm ||
+      !trimmedName
+    ) {
       setError("All fields are required.");
       return;
     }
-    if (password !== confirm) {
+    if (trimmedPassword !== trimmedConfirm) {
       setError("Passwords do not match.");
       return;
     }
-    if (password.length < 6) {
+    if (trimmedPassword.length < 6) {
       setError("Password must be at least 6 characters long.");
       return;
     }
@@ -54,7 +65,11 @@ export default function SignUpModal({
       const res = await fetch("/api/user/sign-up", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, name }),
+        body: JSON.stringify({
+          username: trimmedUsername,
+          password: trimmedPassword,
+          name: trimmedName,
+        }),
       });
       if (res.ok) {
         setSuccess(true);
