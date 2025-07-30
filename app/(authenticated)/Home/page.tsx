@@ -36,6 +36,14 @@ export default function HomePage() {
             : "Welcome to GrabMyRecipe!"}
         </h1>
       </div>
+      <div className="flex flex-col items-center mb-8 -mt-4">
+        <img
+          src={`/profile-pics/${user.image}`}
+          // src="/profile-pics/male1-profile-pic.png" // Default image
+          alt="Profile"
+          className="mt-2 w-24 h-24 rounded-full border-4 border-orange-500 object-cover"
+        />
+      </div>
       <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-200 mb-8 text-center max-w-xl">
         Your personal recipe dashboard. Quickly access your recipes, upload new
         ones, or check your favorites. Stay organized and inspired!
@@ -65,9 +73,7 @@ export default function HomePage() {
           Important Info
         </h2>
         <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 text-base space-y-1">
-          <li>
-            The app supports videos in any language
-          </li>
+          <li>The app supports videos in any language</li>
           <li>
             The longer the video, the more it will take to output the data.
           </li>
@@ -75,9 +81,7 @@ export default function HomePage() {
             Some videos may not work due to their format or content. Please
             check the video if it does not work.
           </li>
-          <li>
-            The app is still in beta, so expect some bugs and issues.
-          </li>
+          <li>The app is still in beta, so expect some bugs and issues.</li>
           <li>
             Please report any bugs to
             <a

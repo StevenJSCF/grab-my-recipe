@@ -102,9 +102,18 @@ export default function RecipesPage() {
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
         <div className="px-6 py-4 flex flex-col sm:flex-row gap-4 items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            {user && user.name ? `${user.name}'s Recipes` : "My Recipes"}
-          </h1>
+          <div className="flex items-center gap-3">
+            {user && user.image && (
+              <img
+                src={`/profile-pics/${user.image}`}
+                alt="Profile"
+                className="w-10 h-10 rounded-full border-2 border-orange-400 object-cover"
+              />
+            )}
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              {user && user.name ? `${user.name}'s Recipes` : "My Recipes"}
+            </h1>
+          </div>
           <div className="flex items-center space-x-2">
             <Button
               variant={viewMode === "grid" ? "default" : "outline"}

@@ -9,6 +9,7 @@ export default function SettingsPage() {
   const [editUsername, setEditUsername] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const { data: user, isLoading } = useQuery({
     queryKey: ["user"],
@@ -50,11 +51,82 @@ export default function SettingsPage() {
         <div className="text-lg mb-2">
           Hey <span className="font-semibold">{user.name}</span>, you are signed
           in.
-        <div className="text-sm text-gray-500 dark:text-gray-400 text-center">
-          Yeah, no kidding
+          <div className="text-sm text-gray-500 dark:text-gray-400 text-center">
+            Yeah, no kidding
+          </div>
         </div>
-        </div>
-       
+        {user.image && (
+          <div className="flex justify-center mb-2">
+            <img
+              src={`/profile-pics/${user.image}`}
+              alt="Profile"
+              className="w-24 h-24 rounded-full border-4 border-orange-500 object-cover cursor-pointer"
+              onClick={() => setShowModal(true)}
+            />
+          </div>
+        )}
+
+        {/* Modal for choosing female icon */}
+        {showModal && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            style={{ background: "rgba(0,0,0,0.3)" }}
+          >
+            <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-lg shadow-lg p-6 flex flex-col items-center relative">
+              <button
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 dark:hover:text-white text-2xl"
+                onClick={() => setShowModal(false)}
+                aria-label="Close"
+              >
+                &times;
+              </button>
+              <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+                Choose Female Icon
+              </h2>
+              <div className="flex gap-6">
+                <img
+                  src={`/profile-pics/${user.image.replace("male", "female")}`}
+                  alt="Female Icon"
+                  className="w-24 h-24 rounded-full border-4 border-pink-500 object-cover cursor-pointer hover:scale-105 transition-transform"
+                  onClick={async () => {
+                    setShowModal(false);
+                    setSaving(true);
+                    setError("");
+                    try {
+                      const newImage = user.image.replace("male", "female");
+                      const res = await fetch("/api/user/update", {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          id: user.id,
+                          data: { image: newImage },
+                        }),
+                      });
+                      if (res.ok) {
+                        toast.success("Profile image updated!");
+                        queryClient.setQueryData(["user"], (prev: any) =>
+                          prev ? { ...prev, image: newImage } : prev
+                        );
+                      } else {
+                        const data = await res.json();
+                        setError(
+                          data.error || "Failed to update profile image"
+                        );
+                      }
+                    } catch (err) {
+                      setError("Failed to update profile image");
+                    }
+                    setSaving(false);
+                  }}
+                />
+              </div>
+              {error && (
+                <div className="text-red-500 text-sm mt-2">{error}</div>
+              )}
+            </div>
+          </div>
+        )}
+
         <form
           className="flex flex-col gap-3 w-full"
           onSubmit={async (e) => {
