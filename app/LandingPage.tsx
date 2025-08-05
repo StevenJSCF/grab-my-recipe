@@ -12,6 +12,7 @@ export default function LandingPage() {
   const [showSignIn, setShowSignIn] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
   const [showDemoToast, setShowDemoToast] = useState(false);
+  const [showDemoModal, setShowDemoModal] = useState(false);
   const router = useRouter();
 
   // Redirect to /Home if already authenticated
@@ -34,6 +35,7 @@ export default function LandingPage() {
       return () => clearTimeout(timer);
     }
   }, [showDemoToast]);
+
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -71,7 +73,7 @@ export default function LandingPage() {
             <Button
               size="lg"
               className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3"
-              onClick={() => setShowSignIn(true)}
+              onClick={() => setShowSignUp(true)}
             >
               Try it now <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
@@ -89,14 +91,41 @@ export default function LandingPage() {
               size="lg"
               variant="outline"
               className="px-8 py-3"
-              onClick={() => setShowDemoToast(true)}
+              onClick={() => setShowDemoModal(true)}
             >
               Watch Demo
             </Button>
-            {/* Toast notification for demo video */}
-            {showDemoToast && (
-              <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-gray-900 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2 animate-fade-in">
-                <span>Demo video coming soon!</span>
+            {/* Demo Video Modal */}
+            {showDemoModal && (
+              <div
+                className="fixed inset-0 z-50 flex items-center justify-center"
+                style={{ background: "rgba(0,0,0,0.6)" }}
+                onClick={() => setShowDemoModal(false)}
+              >
+                <div
+                  className="bg-white/80 backdrop-blur-md rounded-lg shadow-lg p-4 max-w-2xl w-full relative"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl font-bold"
+                    onClick={() => setShowDemoModal(false)}
+                    aria-label="Close"
+                  >
+                    &times;
+                  </button>
+                  <div className="aspect-video w-full">
+                    <iframe
+                      width="100%"
+                      height="400"
+                      src="https://www.youtube.com/embed/JcYMICpVTCA"
+                      title="Demo Video"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="w-full h-full rounded-lg"
+                    />
+                  </div>
+                </div>
               </div>
             )}
           </div>
