@@ -18,7 +18,15 @@ export default function UploadRecipePage() {
     if (!url) return null;
     try {
       const parseUrl = new URL(url);
-      return parseUrl.searchParams.get("v");
+      // Handle youtu.be short links
+      if (parseUrl.hostname === "youtu.be") {
+        return parseUrl.pathname.replace("/", "");
+      }
+      // Handle youtube.com URLs
+      if (parseUrl.hostname.includes("youtube.com")) {
+        return parseUrl.searchParams.get("v");
+      }
+      return null;
     } catch {
       return null;
     }
