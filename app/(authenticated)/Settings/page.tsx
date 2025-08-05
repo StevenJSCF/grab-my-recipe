@@ -203,8 +203,8 @@ export default function SettingsPage() {
             window.location.href = "/";
           }}
           className="mt-6 bg-orange-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg shadow"
-        >
-          Sign Out
+        > 
+          Log Out
         </button>
       </div>
     </div>

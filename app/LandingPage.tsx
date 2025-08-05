@@ -60,9 +60,9 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            Turn Screenshots into
-            <span className="text-orange-500 block">Perfect Recipes</span>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            Turn YouTube cooking chaos into
+            <span className="text-orange-500 block">Perfect, Clear, Readable Recipes</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Upload a cooking YouTube video URL. This app will extract and format
@@ -117,7 +117,7 @@ export default function LandingPage() {
                     <iframe
                       width="100%"
                       height="400"
-                      src="https://www.youtube.com/embed/JcYMICpVTCA"
+                      src="https://www.youtube.com/embed/qyCp7rpeQ1I"
                       title="Demo Video"
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
